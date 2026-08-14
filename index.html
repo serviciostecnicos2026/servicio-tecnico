@@ -369,20 +369,26 @@
         let usuarioSesionActual = localStorage.getItem('user_gmail') || null;
         let registros = [];
 
-        // Comprobar si ya había una sesión guardada
         window.addEventListener('DOMContentLoaded', () => {
             if (usuarioSesionActual) {
                 activarSesion(usuarioSesionActual);
             }
         });
 
-        function iniciarSesion(event) {
-            event.preventDefault();
-            const correoInput = document.getElementById('login-email').value.trim().toLowerCase();
-            if (correoInput) {
-                usuarioSesionActual = correoInput;
+        // 🟢 FUNCIÓN QUE FALTABA: Procesa el token seguro de Google
+        function manejarLoginGoogle(response) {
+            try {
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+                const payload = JSON.parse(jsonPayload);
+                
+                usuarioSesionActual = payload.email.toLowerCase();
                 localStorage.setItem('user_gmail', usuarioSesionActual);
                 activarSesion(usuarioSesionActual);
+            } catch (error) {
+                console.error("Error al decodificar la credencial de Google:", error);
+                alert("No se pudo iniciar sesión con Google.");
             }
         }
 
@@ -406,7 +412,9 @@
             
             document.getElementById('pantalla-login').style.display = 'block';
             document.getElementById('app-contenido').style.display = 'none';
-            document.getElementById('login-email').value = '';
+            
+            // Recarga la página para limpiar el botón de Google correctamente
+            location.reload();
         }
 
         function mostrarVista(idVista) {
@@ -447,8 +455,6 @@
 
             registros.forEach(reg => {
                 const fila = document.createElement('tr');
-                
-                // Compara si la fila pertenece al correo activo (convirtiendo a minúsculas para evitar diferencias)
                 const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
                 
                 const botonBorrar = esDueño 
@@ -545,6 +551,7 @@
                 })
                 .catch(err => console.error("Error al cargar datos:", err));
         }
+    
     </script>
 </body>
 </html>
