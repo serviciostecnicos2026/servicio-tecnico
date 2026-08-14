@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <title>Servicio Técnico - EETP N°277</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #333333;
+            --gray-light: #e4e4e4;
+            --gray-dark: #555555;
+            --green-accent: #2e7d32;
+            --green-hover: #1b5e20;
+            --red-accent: #c62828;
+            --red-hover: #b71c1c;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--white);
+            padding: 12px 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--green-accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-header {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: var(--gray-dark);
+            font-weight: 700;
+        }
+
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-dark);
+        }
+
+        .vista {
+            display: none;
+            padding: 20px;
+            width: 100%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .vista.activa {
+            display: block;
+        }
+
+        #vista-formulario {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pantalla de Inicio de Sesión Simple */
+        #pantalla-login {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--white);
+            max-width: 450px;
+            margin: 60px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid var(--gray-light);
+        }
+
+        .tabla-contenedor {
+            background: var(--white);
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--gray-light);
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+            border-right: 1px solid var(--gray-light);
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: var(--gray-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        td { font-size: 0.9rem; }
+
+        .btn-flotante {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--green-accent);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-flotante:hover {
+            background-color: var(--green-hover);
+            transform: scale(1.05);
+        }
+
+        .btn-borrar {
+            background-color: var(--red-accent);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-borrar:hover { background-color: var(--red-hover); }
+
+        .btn-logout {
+            background-color: #666;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        form {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--gray-light);
+        }
+
+        .grupo-form { margin-bottom: 15px; }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fafafa;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        input[readonly] {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        textarea { resize: vertical; min-height: 80px; }
+
+        .acciones-form {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-atras { background-color: var(--gray-dark); color: var(--white); }
+        .btn-aceptar { background-color: var(--green-accent); color: var(--white); }
+        .btn-ingresar { background-color: var(--green-accent); color: var(--white); width: 100%; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">
+            <img src="logo.png" alt="Logo" class="logo-header" onerror="this.style.display='none'">
+            <h2>SERVICIO TÉCNICO EETP №277</h2>
+        </div>
+        <div class="user-status" id="user-status-container">
+            <span id="user-email-display" style="display:none;"></span>
+            <button class="btn-logout" id="btn-logout" style="display:none;" onclick="cerrarSesion()">Salir</button>
+        </div>
+    </header>
+
+    <!-- INICIO DE SESIÓN SIMPLE -->
+   <!-- PANTALLA DE ACCESO CON BOTÓN REAL DE GOOGLE -->
+    <div id="pantalla-login">
+        <h3 style="margin-bottom: 10px;">Servicio Técnico</h3>
+        <p style="margin-bottom: 25px; color: #666; font-size: 0.9rem;">Accede con tu cuenta oficial de Google para registrar o eliminar tus reportes.</p>
+        
+        <!-- BOTÓN GOOGLE CON TU CLIENT ID -->
+        <div style="display: flex; justify-content: center;">
+            <div id="g_id_onload"
+                data-client_id="539814549126-opqkfu4ckl6kgsn30s5tqmvoois5ebth.apps.googleusercontent.com"
+                data-callback="manejarLoginGoogle"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"></div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="app-contenido" style="display: none;">
+        
+        <!-- VISTA 1: TABLA PRINCIPAL -->
+        <div id="vista-tabla" class="vista activa">
+            <div class="tabla-contenedor">
+                <table id="tabla-registros">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Docente</th>
+                            <th>Sala</th>
+                            <th>Equipo</th>
+                            <th>Estado</th>
+                            <th>Notas</th>
+                            <th>Gmail</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Carga dinámica -->
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn-flotante" id="btn-nuevo">+</button>
+        </div>
+
+        <!-- VISTA 2: FORMULARIO -->
+        <div id="vista-formulario" class="vista">
+            <form id="form-registro">
+                <div class="grupo-form">
+                    <label for="id">ID (Autogenerado)</label>
+                    <input type="text" id="id" readonly placeholder="Calculando ID...">
+                </div>
+
+                <div class="grupo-form">
+                    <label for="fecha">Fecha *</label>
+                    <input type="date" id="fecha" required>
+                </div>
+
+                <div class="grupo-form">
+                    <label for="docente">Docente *</label>
+                    <input type="text" id="docente" placeholder="Nombre completo del docente" required>
+                </div>
+
+                <div class="grupo-form">
+                    <label for="sala">Sala de Net *</label>
+                    <select id="sala" required>
+                        <option value="" disabled selected>Selecciona una sala</option>
+                        <option value="Sala 18">Sala 18</option>
+                        <option value="Sala 19">Sala 19</option>
+                    </select>
+                </div>
+
+                <div class="grupo-form">
+                    <label for="equipo">Equipo (N° de Compu) *</label>
+                    <input type="text" id="equipo" placeholder="Ej: PC-12 o Netbook 5" required>
+                </div>
+
+                <div class="grupo-form">
+                    <label for="estado">Estado Actual *</label>
+                    <select id="estado" required>
+                        <option value="" disabled selected>Selecciona un estado</option>
+                        <option value="En Funcionamiento">En Funcionamiento</option>
+                        <option value="No funcional">No funcional</option>
+                        <option value="En reparación">En reparación</option>
+                    </select>
+                </div>
+
+                <div class="grupo-form">
+                    <label for="notas">Notas / Descripción del problema *</label>
+                    <textarea id="notas" placeholder="Describe el detalle del servicio técnico..."></textarea>
+                </div>
+
+                <div class="grupo-form">
+                    <label for="gmail">Gmail (Autenticado)</label>
+                    <input type="email" id="gmail" readonly>
+                </div>
+
+                <div class="acciones-form">
+                    <button type="button" class="btn btn-atras" id="btn-atras">Atrás</button>
+                    <button type="submit" class="btn btn-aceptar">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const vistaTabla = document.getElementById('vista-tabla');
+        const vistaFormulario = document.getElementById('vista-formulario');
+        const btnNuevo = document.getElementById('btn-nuevo');
+        const btnAtras = document.getElementById('btn-atras');
+        const formRegistro = document.getElementById('form-registro');
+        const tbodyRegistros = document.querySelector('#tabla-registros tbody');
+
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbx0Wf-uRGpbFeHGL-yO8GlXLd6zdcznKf07Jxsq_spIDtX0mOucoqU07L1Fv_X94iRI/exec";
+
+        let usuarioSesionActual = localStorage.getItem('user_gmail') || null;
+        let registros = [];
+
+        // Comprobar si ya había una sesión guardada
+        window.addEventListener('DOMContentLoaded', () => {
+            if (usuarioSesionActual) {
+                activarSesion(usuarioSesionActual);
+            }
+        });
+
+        function iniciarSesion(event) {
+            event.preventDefault();
+            const correoInput = document.getElementById('login-email').value.trim().toLowerCase();
+            if (correoInput) {
+                usuarioSesionActual = correoInput;
+                localStorage.setItem('user_gmail', usuarioSesionActual);
+                activarSesion(usuarioSesionActual);
+            }
+        }
+
+        function activarSesion(email) {
+            document.getElementById('user-email-display').style.display = 'inline';
+            document.getElementById('user-email-display').textContent = email;
+            document.getElementById('btn-logout').style.display = 'inline';
+            
+            document.getElementById('pantalla-login').style.display = 'none';
+            document.getElementById('app-contenido').style.display = 'block';
+
+            cargarDatosDesdeSheets();
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('user_gmail');
+            usuarioSesionActual = null;
+            
+            document.getElementById('user-email-display').style.display = 'none';
+            document.getElementById('btn-logout').style.display = 'none';
+            
+            document.getElementById('pantalla-login').style.display = 'block';
+            document.getElementById('app-contenido').style.display = 'none';
+            document.getElementById('login-email').value = '';
+        }
+
+        function mostrarVista(idVista) {
+            document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+            document.getElementById(idVista).classList.add('activa');
+        }
+
+        function obtenerSiguienteID() {
+            if (registros.length === 0) return 1;
+            const ids = registros.map(r => parseInt(r.id)).filter(id => !isNaN(id));
+            return ids.length === 0 ? 1 : Math.max(...ids) + 1;
+        }
+
+        btnNuevo.addEventListener('click', () => {
+            document.getElementById('fecha').valueAsDate = new Date();
+            document.getElementById('id').value = obtenerSiguienteID();
+            document.getElementById('gmail').value = usuarioSesionActual;
+            mostrarVista('vista-formulario');
+        });
+
+        btnAtras.addEventListener('click', () => {
+            formRegistro.reset();
+            mostrarVista('vista-tabla');
+        });
+
+        function formatearFecha(fechaTexto) {
+            if (!fechaTexto) return "-";
+            return fechaTexto.includes('T') ? fechaTexto.split('T')[0] : fechaTexto;
+        }
+
+        function actualizarTabla() {
+            tbodyRegistros.innerHTML = '';
+            
+            if(registros.length === 0) {
+                tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay registros todavía.</td></tr>';
+                return;
+            }
+
+            registros.forEach(reg => {
+                const fila = document.createElement('tr');
+                
+                // Compara si la fila pertenece al correo activo (convirtiendo a minúsculas para evitar diferencias)
+                const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
+                
+                const botonBorrar = esDueño 
+                    ? `<button class="btn-borrar" onclick="eliminarRegistro('${reg.id}', '${reg.gmail}')">🗑️ Borrar</button>`
+                    : `<span style="color:#aaa;">-</span>`;
+
+                fila.innerHTML = `
+                    <td><strong>#${reg.id}</strong></td>
+                    <td>${formatearFecha(reg.fecha)}</td>
+                    <td>${reg.docente}</td>
+                    <td>${reg.sala}</td>
+                    <td>${reg.equipo}</td>
+                    <td>${reg.estado}</td>
+                    <td>${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
+                    <td>${reg.gmail}</td>
+                    <td>${botonBorrar}</td>
+                `;
+                tbodyRegistros.appendChild(fila);
+            });
+        }
+
+        function eliminarRegistro(id, ownerGmail) {
+            if (usuarioSesionActual.toLowerCase() !== ownerGmail.toLowerCase()) {
+                alert("Solo puedes eliminar tus propios registros.");
+                return;
+            }
+
+            if (!confirm(`¿Estás seguro de eliminar el registro #${id}?`)) {
+                return;
+            }
+
+            fetch(URL_SCRIPT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'delete',
+                    id: id,
+                    gmail: usuarioSesionActual
+                })
+            })
+            .then(() => {
+                alert("Registro eliminado.");
+                registros = registros.filter(r => r.id.toString() !== id.toString());
+                actualizarTabla();
+            })
+            .catch(err => alert("Error al intentar eliminar."));
+        }
+
+        formRegistro.addEventListener('submit', function(evento) {
+            evento.preventDefault();
+
+            const botonAceptar = formRegistro.querySelector('.btn-aceptar');
+            botonAceptar.textContent = "Guardando...";
+            botonAceptar.disabled = true;
+
+            const nuevoRegistro = {
+                id: document.getElementById('id').value,
+                fecha: document.getElementById('fecha').value,
+                docente: document.getElementById('docente').value,
+                sala: document.getElementById('sala').value,
+                equipo: document.getElementById('equipo').value,
+                estado: document.getElementById('estado').value,
+                notas: document.getElementById('notas').value,
+                gmail: usuarioSesionActual
+            };
+
+            fetch(URL_SCRIPT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevoRegistro)
+            })
+            .then(() => {
+                alert("¡Registro guardado con éxito!");
+                registros.push(nuevoRegistro);
+                actualizarTabla();
+                formRegistro.reset();
+                mostrarVista('vista-tabla');
+            })
+            .catch(error => alert('Error al guardar.'))
+            .finally(() => {
+                botonAceptar.textContent = "Aceptar";
+                botonAceptar.disabled = false;
+            });
+        });
+
+        function cargarDatosDesdeSheets() {
+            fetch(URL_SCRIPT)
+                .then(response => response.json())
+                .then(data => {
+                    registros = data;
+                    actualizarTabla();
+                })
+                .catch(err => console.error("Error al cargar datos:", err));
+        }
+    </script>
+</body>
+</html>
