@@ -157,7 +157,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto;
+            table-layout: fixed; /* Mantiene la tabla con anchos controlados */
         }
 
         th, td {
@@ -165,21 +165,27 @@
             text-align: left;
             border-bottom: 1px solid var(--gray-light);
             border-right: 1px solid var(--gray-light);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
+
+        /* Anchos específicos para columnas para evitar desbordes */
+        th:nth-child(1), td:nth-child(1) { width: 60px; }   /* ID */
+        th:nth-child(2), td:nth-child(2) { width: 100px; }  /* Fecha */
+        th:nth-child(3), td:nth-child(3) { width: 130px; }  /* Docente */
+        th:nth-child(4), td:nth-child(4) { width: 90px; }   /* Sala */
+        th:nth-child(5), td:nth-child(5) { width: 90px; }   /* Equipo */
+        th:nth-child(6), td:nth-child(6) { width: 120px; }  /* Estado */
+        th:nth-child(7), td:nth-child(7) { width: 180px; }  /* Notas (con límite controlado) */
+        th:nth-child(8), td:nth-child(8) { width: 140px; }  /* Última Modificación */
+        th:nth-child(9), td:nth-child(9) { width: 60px; text-align: center; }  /* Acciones */
 
         th {
             background-color: #f8f9fa;
             color: var(--gray-dark);
             font-weight: 600;
             font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        th.col-acciones-invidible {
-            color: transparent;
-            background-color: transparent;
-            border: none;
-            width: 40px;
         }
 
         td { font-size: 0.85rem; }
@@ -408,7 +414,7 @@
                             <th>Estado</th>
                             <th>Notas</th>
                             <th>Última Modificación</th>
-                            <th class="col-acciones-invidible">Acciones</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -628,23 +634,24 @@
             tbodyRegistros.innerHTML = '';
             
             if(listaAMostrar.length === 0) {
-                tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay registros todavía.</td></tr>';
+                tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center; white-space: normal;">No hay registros todavía.</td></tr>';
                 return;
             }
 
             listaAMostrar.forEach(reg => {
                 const fila = document.createElement('tr');
                 const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
+                const ultimaMod = (reg.ultimaModificacion && reg.ultimaModificacion.trim() !== "") ? reg.ultimaModificacion : "-";
                 
                 fila.innerHTML = `
-                    <td><strong>#${reg.id}</strong></td>
-                    <td>${formatearFecha(reg.fecha)}</td>
-                    <td>${reg.docente}</td>
-                    <td>${reg.sala}</td>
-                    <td>${reg.equipo}</td>
-                    <td>${reg.estado}</td>
-                    <td>${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
-                    <td>${reg.ultimaModificacion ? reg.ultimaModificacion : "-"}</td>
+                    <td title="#${reg.id}"><strong>#${reg.id}</strong></td>
+                    <td title="${formatearFecha(reg.fecha)}">${formatearFecha(reg.fecha)}</td>
+                    <td title="${reg.docente || ''}">${reg.docente || '-'}</td>
+                    <td title="${reg.sala || ''}">${reg.sala || '-'}</td>
+                    <td title="${reg.equipo || ''}">${reg.equipo || '-'}</td>
+                    <td title="${reg.estado || ''}">${reg.estado || '-'}</td>
+                    <td title="${reg.notas || ''}">${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
+                    <td title="${ultimaMod}">${ultimaMod}</td>
                     <td>
                         <button class="btn-tres-puntos" onclick="manejarClickPuntos('${reg.id}', '${reg.gmail || ""}', ${esDueño})">⋮</button>
                     </td>
