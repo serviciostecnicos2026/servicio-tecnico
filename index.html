@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="manifest" href="manifest.json">
+
     <title>Servicio Técnico - EETP N°277</title>
+
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -89,8 +92,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         #pantalla-login {
@@ -160,7 +170,8 @@
             table-layout: auto;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid var(--gray-light);
@@ -182,7 +193,13 @@
             width: 40px;
         }
 
-        td { font-size: 0.85rem; }
+        td {
+            font-size: 0.85rem;
+            word-wrap: break-word;
+            white-space: normal;
+            max-width: 150px;
+            vertical-align: top;
+        }
 
         .btn-flotante {
             position: fixed;
@@ -233,7 +250,6 @@
             background-color: var(--gray-light);
         }
 
-        /* Estilos de Pop-ups unificados */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -309,7 +325,9 @@
             border: 1px solid var(--gray-light);
         }
 
-        .grupo-form { margin-bottom: 15px; }
+        .grupo-form {
+            margin-bottom: 15px;
+        }
 
         label {
             display: block;
@@ -319,7 +337,9 @@
             font-size: 0.9rem;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -335,7 +355,10 @@
             cursor: not-allowed;
         }
 
-        textarea { resize: vertical; min-height: 80px; }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
 
         .acciones-form {
             display: flex;
@@ -351,63 +374,152 @@
             font-weight: 600;
             cursor: pointer;
         }
-        
-        /* Agrega esto a tu CSS */
-td {
-  word-wrap: break-word;     /* Rompe palabras largas */
-  white-space: normal;       /* Permite saltos de línea */
-  max-width: 150px;          /* Ajusta según el ancho que quieras */
-  vertical-align: top;       /* Alinea el texto arriba */
-}
 
-        .btn-atras { background-color: var(--gray-dark); color: var(--white); }
-        .btn-aceptar { background-color: var(--green-accent); color: var(--white); }
+        .btn-atras {
+            background-color: var(--gray-dark);
+            color: var(--white);
+        }
+
+        .btn-aceptar {
+            background-color: var(--green-accent);
+            color: var(--white);
+        }
 
         @media screen and (max-width: 768px) {
-            header { padding: 10px 15px; }
-            h2 { font-size: 1rem; }
-            .logo-header { height: 35px; }
-            th, td { padding: 8px 6px; font-size: 0.75rem; }
+
+            header {
+                padding: 10px 15px;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            .logo-header {
+                height: 35px;
+            }
+
+            th,
+            td {
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <header>
+
         <div class="header-brand">
-            <img src="logo.png" alt="Logo" class="logo-header" onerror="this.src='https://via.placeholder.com/45?text=LOGO'">
+
+            <img
+                src="logo.png"
+                alt="Logo"
+                class="logo-header"
+                onerror="this.src='https://via.placeholder.com/45?text=LOGO'"
+            >
+
             <h2>SERVICIO TÉCNICO EETP №277</h2>
+
         </div>
-        <div class="user-status" id="user-status-container">
-            <span id="user-email-display" style="display:none;"></span>
-            <button class="btn-logout" id="btn-logout" style="display:none;" onclick="confirmarCierreSesion()">Salir</button>
+
+        <div
+            class="user-status"
+            id="user-status-container"
+        >
+
+            <span
+                id="user-email-display"
+                style="display:none;"
+            ></span>
+
+            <button
+                class="btn-logout"
+                id="btn-logout"
+                style="display:none;"
+                onclick="confirmarCierreSesion()"
+            >
+                Salir
+            </button>
+
         </div>
+
     </header>
 
+
+    <!-- LOGIN -->
+
     <div id="pantalla-login">
-        <h3 style="margin-bottom: 10px;">Servicio Técnico</h3>
-        <p style="margin-bottom: 25px; color: #666; font-size: 0.9rem;">Accede con tu cuenta oficial de Google para registrar o eliminar tus reportes.</p>
-        
+
+        <h3 style="margin-bottom: 10px;">
+            Servicio Técnico
+        </h3>
+
+        <p
+            style="margin-bottom: 25px; color: #666; font-size: 0.9rem;"
+        >
+            Accede con tu cuenta oficial de Google para registrar o eliminar tus reportes.
+        </p>
+
         <div style="display: flex; justify-content: center;">
-            <div id="g_id_onload"
+
+            <div
+                id="g_id_onload"
                 data-client_id="539814549126-opqkfu4ckl6kgsn30s5tqmvoois5ebth.apps.googleusercontent.com"
                 data-callback="manejarLoginGoogle"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"></div>
+                data-auto_prompt="false"
+            ></div>
+
+            <div
+                class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="outline"
+                data-text="sign_in_with"
+            ></div>
+
         </div>
+
     </div>
 
-    <div id="app-contenido" style="display: none;">
-        
-        <div id="vista-tabla" class="vista activa">
+
+    <!-- APLICACIÓN -->
+
+    <div
+        id="app-contenido"
+        style="display: none;"
+    >
+
+        <!-- TABLA -->
+
+        <div
+            id="vista-tabla"
+            class="vista activa"
+        >
+
             <div class="search-container">
-                <input type="text" id="input-buscador" class="search-input" placeholder="Buscar por docente, sala, equipo o estado..." oninput="filtrarRegistros()">
+
+                <input
+                    type="text"
+                    id="input-buscador"
+                    class="search-input"
+                    placeholder="Buscar por docente, sala, equipo o estado..."
+                    oninput="filtrarRegistros()"
+                >
+
             </div>
+
+
             <div class="tabla-contenedor">
+
                 <table id="tabla-registros">
+
                     <thead>
+
                         <tr>
+
                             <th>ID</th>
                             <th>Fecha</th>
                             <th>Docente</th>
@@ -416,415 +528,1464 @@ td {
                             <th>Estado</th>
                             <th>Notas</th>
                             <th>Última Modificación</th>
-                            <th class="col-acciones-invidible">Acciones</th>
+
+                            <th class="col-acciones-invidible">
+                                Acciones
+                            </th>
+
                         </tr>
+
                     </thead>
-                    <tbody>
-                    </tbody>
+
+                    <tbody></tbody>
+
                 </table>
+
             </div>
-            <button class="btn-flotante" id="btn-nuevo">+</button>
+
+
+            <button
+                class="btn-flotante"
+                id="btn-nuevo"
+            >
+                +
+            </button>
+
         </div>
 
-        <div id="vista-formulario" class="vista">
+
+        <!-- FORMULARIO -->
+
+        <div
+            id="vista-formulario"
+            class="vista"
+        >
+
             <form id="form-registro">
-                <input type="hidden" id="modo-edicion" value="false">
-                <div class="grupo-form">
-                    <label for="id">ID (Autogenerado)</label>
-                    <input type="text" id="id" readonly placeholder="Calculando ID...">
-                </div>
+
+                <input
+                    type="hidden"
+                    id="modo-edicion"
+                    value="false"
+                >
+
+
+                <!-- ID -->
 
                 <div class="grupo-form">
-                    <label for="fecha">Fecha del Registro *</label>
-                    <input type="date" id="fecha" required>
+
+                    <label for="id">
+                        ID (Autogenerado)
+                    </label>
+
+                    <input
+                        type="text"
+                        id="id"
+                        readonly
+                        placeholder="Se asignará al guardar"
+                    >
+
                 </div>
 
-                <div class="grupo-form">
-                    <label for="docente">Docente *</label>
-                    <input type="text" id="docente" placeholder="Nombre completo del docente" required>
-                </div>
+
+                <!-- FECHA -->
 
                 <div class="grupo-form">
-                    <label for="sala">Sala de Net *</label>
-                    <select id="sala" required>
-                        <option value="" disabled selected>Selecciona una sala</option>
-                        <option value="Sala 18">Sala 18</option>
-                        <option value="Sala 19">Sala 19</option>
+
+                    <label for="fecha">
+                        Fecha del Registro *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fecha"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DOCENTE -->
+
+                <div class="grupo-form">
+
+                    <label for="docente">
+                        Docente *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="docente"
+                        placeholder="Nombre completo del docente"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SALA -->
+
+                <div class="grupo-form">
+
+                    <label for="sala">
+                        Sala de Net *
+                    </label>
+
+                    <select
+                        id="sala"
+                        required
+                    >
+
+                        <option
+                            value=""
+                            disabled
+                            selected
+                        >
+                            Selecciona una sala
+                        </option>
+
+                        <option value="Sala 18">
+                            Sala 18
+                        </option>
+
+                        <option value="Sala 19">
+                            Sala 19
+                        </option>
+
                     </select>
+
                 </div>
 
-                <div class="grupo-form">
-                    <label for="equipo">Equipo (N° de Compu) *</label>
-                    <input type="text" id="equipo" placeholder="Ej: PC-12 o Netbook 5" required>
-                </div>
+
+                <!-- EQUIPO -->
 
                 <div class="grupo-form">
-                    <label for="estado">Estado Actual *</label>
-                    <select id="estado" required>
-                        <option value="" disabled selected>Selecciona un estado</option>
-                        <option value="En Funcionamiento">En Funcionamiento</option>
-                        <option value="No funcional">No funcional</option>
-                        <option value="En reparación">En reparación</option>
+
+                    <label for="equipo">
+                        Equipo (N° de Compu) *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="equipo"
+                        placeholder="Ej: PC-12 o Netbook 5"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ESTADO -->
+
+                <div class="grupo-form">
+
+                    <label for="estado">
+                        Estado Actual *
+                    </label>
+
+                    <select
+                        id="estado"
+                        required
+                    >
+
+                        <option
+                            value=""
+                            disabled
+                            selected
+                        >
+                            Selecciona un estado
+                        </option>
+
+                        <option value="En Funcionamiento">
+                            En Funcionamiento
+                        </option>
+
+                        <option value="No funcional">
+                            No funcional
+                        </option>
+
+                        <option value="En reparación">
+                            En reparación
+                        </option>
+
                     </select>
+
                 </div>
+
+
+                <!-- NOTAS -->
 
                 <div class="grupo-form">
-                    <label for="notas">Notas / Descripción del problema *</label>
-                    <textarea id="notas" placeholder="Describe el detalle del servicio técnico..."></textarea>
+
+                    <label for="notas">
+                        Notas / Descripción del problema *
+                    </label>
+
+                    <textarea
+                        id="notas"
+                        placeholder="Describe el detalle del servicio técnico..."
+                    ></textarea>
+
                 </div>
 
-                <div class="grupo-form" style="display:none;">
-                    <label for="gmail">Gmail (Autenticado)</label>
-                    <input type="email" id="gmail" readonly>
+
+                <!-- GMAIL -->
+
+                <div
+                    class="grupo-form"
+                    style="display:none;"
+                >
+
+                    <label for="gmail">
+                        Gmail (Autenticado)
+                    </label>
+
+                    <input
+                        type="email"
+                        id="gmail"
+                        readonly
+                    >
+
                 </div>
+
+
+                <!-- BOTONES -->
 
                 <div class="acciones-form">
-                    <button type="button" class="btn btn-atras" id="btn-atras">Atrás</button>
-                    <button type="submit" class="btn btn-aceptar">Aceptar</button>
+
+                    <button
+                        type="button"
+                        class="btn btn-atras"
+                        id="btn-atras"
+                    >
+                        Atrás
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-aceptar"
+                    >
+                        Aceptar
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
 
-    <!-- POP-UP DE CIERRE DE SESIÓN -->
-    <div id="modal-logout" class="modal-overlay">
+
+    <!-- MODAL LOGOUT -->
+
+    <div
+        id="modal-logout"
+        class="modal-overlay"
+    >
+
         <div class="modal-card">
-            <p>¿Estás seguro que querés salir?</p>
+
+            <p>
+                ¿Estás seguro que querés salir?
+            </p>
+
             <div class="modal-acciones">
-                <button class="modal-btn modal-btn-no" onclick="cerrarModalLogout()">No</button>
-                <button class="modal-btn modal-btn-si" onclick="cerrarSesion()">Sí</button>
+
+                <button
+                    class="modal-btn modal-btn-no"
+                    onclick="cerrarModalLogout()"
+                >
+                    No
+                </button>
+
+                <button
+                    class="modal-btn modal-btn-si"
+                    onclick="cerrarSesion()"
+                >
+                    Sí
+                </button>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- POP-UP DE ACCIONES ( PROPIETARIO ) -->
-    <div id="modal-acciones-propietario" class="modal-overlay">
+
+    <!-- MODAL ACCIONES -->
+
+    <div
+        id="modal-acciones-propietario"
+        class="modal-overlay"
+    >
+
         <div class="modal-card">
-            <p id="titulo-modal-acciones">Opciones del Registro</p>
+
+            <p id="titulo-modal-acciones">
+                Opciones del Registro
+            </p>
+
             <div class="modal-acciones-columna">
-                <button class="modal-btn modal-btn-modificar" onclick="ejecutarModificarDesdeModal()">Modificar</button>
-                <button class="modal-btn modal-btn-si" onclick="ejecutarBorrarDesdeModal()">Borrar</button>
-                <button class="modal-btn modal-btn-no" onclick="cerrarModalAcciones()">Cancelar</button>
+
+                <button
+                    class="modal-btn modal-btn-modificar"
+                    onclick="ejecutarModificarDesdeModal()"
+                >
+                    Modificar
+                </button>
+
+                <button
+                    class="modal-btn modal-btn-si"
+                    onclick="ejecutarBorrarDesdeModal()"
+                >
+                    Borrar
+                </button>
+
+                <button
+                    class="modal-btn modal-btn-no"
+                    onclick="cerrarModalAcciones()"
+                >
+                    Cancelar
+                </button>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- POP-UP DE INFORMACIÓN ( TERCEROS / INFO DE CREADOR ) -->
-    <div id="modal-info-creador" class="modal-overlay">
+
+    <!-- MODAL INFO -->
+
+    <div
+        id="modal-info-creador"
+        class="modal-overlay"
+    >
+
         <div class="modal-card">
-            <p id="texto-info-creador" style="font-size: 0.95rem; line-height: 1.4;"></p>
+
+            <p
+                id="texto-info-creador"
+                style="font-size: 0.95rem; line-height: 1.4;"
+            ></p>
+
             <div class="modal-acciones">
-                <button class="modal-btn modal-btn-no" onclick="cerrarModalInfo()">Entendido</button>
+
+                <button
+                    class="modal-btn modal-btn-no"
+                    onclick="cerrarModalInfo()"
+                >
+                    Entendido
+                </button>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- POP-UP DE CONFIRMACIÓN DE BORRADO -->
-    <div id="modal-borrar" class="modal-overlay">
+
+    <!-- MODAL BORRAR -->
+
+    <div
+        id="modal-borrar"
+        class="modal-overlay"
+    >
+
         <div class="modal-card">
-            <p id="texto-modal-borrar">¿Estás seguro de eliminar este registro?</p>
+
+            <p id="texto-modal-borrar">
+                ¿Estás seguro de eliminar este registro?
+            </p>
+
             <div class="modal-acciones">
-                <button class="modal-btn modal-btn-no" onclick="cerrarModalBorrar()">No</button>
-                <button class="modal-btn modal-btn-si" id="btn-confirmar-borrar">Sí</button>
+
+                <button
+                    class="modal-btn modal-btn-no"
+                    onclick="cerrarModalBorrar()"
+                >
+                    No
+                </button>
+
+                <button
+                    class="modal-btn modal-btn-si"
+                    id="btn-confirmar-borrar"
+                >
+                    Sí
+                </button>
+
             </div>
+
         </div>
+
     </div>
+
 
     <script>
-        const vistaTabla = document.getElementById('vista-tabla');
-        const vistaFormulario = document.getElementById('vista-formulario');
-        const btnNuevo = document.getElementById('btn-nuevo');
-        const btnAtras = document.getElementById('btn-atras');
-        const formRegistro = document.getElementById('form-registro');
-        const tbodyRegistros = document.querySelector('#tabla-registros tbody');
 
-        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzpYt7ETN9KHxlaPLqo6qsbH3Z81BLXLUx-9Vrog3YquMsluFcSR5UXp1o0DdF_Rloz/exec";
+        // =========================================================
+        // REFERENCIAS
+        // =========================================================
 
-        let usuarioSesionActual = localStorage.getItem('user_gmail') || null;
+        const vistaTabla =
+            document.getElementById('vista-tabla');
+
+        const vistaFormulario =
+            document.getElementById('vista-formulario');
+
+        const btnNuevo =
+            document.getElementById('btn-nuevo');
+
+        const btnAtras =
+            document.getElementById('btn-atras');
+
+        const formRegistro =
+            document.getElementById('form-registro');
+
+        const tbodyRegistros =
+            document.querySelector('#tabla-registros tbody');
+
+
+        // =========================================================
+        // URL DEL APPS SCRIPT
+        // =========================================================
+
+        const URL_SCRIPT =
+            "https://script.google.com/macros/s/AKfycbwAOB873o9wejlr6jIB29pGpFl4ME9n-rzqVjmQnAmxUXEwlWHZVgQvIkVVQbXCUbcE/exec";
+
+
+        // =========================================================
+        // VARIABLES
+        // =========================================================
+
+        let usuarioSesionActual =
+            localStorage.getItem('user_gmail') || null;
+
         let registros = [];
+
         let registroSeleccionadoID = null;
+
         let registroSeleccionadoGmail = null;
 
+
+        // =========================================================
+        // AL CARGAR LA PÁGINA
+        // =========================================================
+
         window.addEventListener('DOMContentLoaded', () => {
+
             if (usuarioSesionActual) {
-                activarSesion(usuarioSesionActual);
+
+                activarSesion(
+                    usuarioSesionActual
+                );
+
             }
+
         });
+
+
+        // =========================================================
+        // LOGIN GOOGLE
+        // =========================================================
 
         function manejarLoginGoogle(response) {
+
             try {
-                const base64Url = response.credential.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-                const payload = JSON.parse(jsonPayload);
-                
-                usuarioSesionActual = payload.email.toLowerCase();
-                localStorage.setItem('user_gmail', usuarioSesionActual);
-                activarSesion(usuarioSesionActual);
+
+                const base64Url =
+                    response.credential.split('.')[1];
+
+                const base64 =
+                    base64Url
+                        .replace(/-/g, '+')
+                        .replace(/_/g, '/');
+
+                const jsonPayload =
+                    decodeURIComponent(
+                        atob(base64)
+                            .split('')
+                            .map(c =>
+                                '%' +
+                                ('00' +
+                                c.charCodeAt(0)
+                                .toString(16))
+                                .slice(-2)
+                            )
+                            .join('')
+                    );
+
+                const payload =
+                    JSON.parse(jsonPayload);
+
+                usuarioSesionActual =
+                    payload.email.toLowerCase();
+
+                localStorage.setItem(
+                    'user_gmail',
+                    usuarioSesionActual
+                );
+
+                activarSesion(
+                    usuarioSesionActual
+                );
+
             } catch (error) {
-                console.error("Error al decodificar la credencial de Google:", error);
-                alert("No se pudo iniciar sesión con Google.");
+
+                console.error(
+                    "Error al decodificar la credencial de Google:",
+                    error
+                );
+
+                alert(
+                    "No se pudo iniciar sesión con Google."
+                );
+
             }
+
         }
+
+
+        // =========================================================
+        // ACTIVAR SESIÓN
+        // =========================================================
 
         function activarSesion(email) {
-            document.getElementById('user-email-display').style.display = 'none';
-            document.getElementById('btn-logout').style.display = 'inline';
-            document.getElementById('pantalla-login').style.display = 'none';
-            document.getElementById('app-contenido').style.display = 'block';
+
+            document.getElementById(
+                'user-email-display'
+            ).style.display = 'none';
+
+            document.getElementById(
+                'btn-logout'
+            ).style.display = 'inline';
+
+            document.getElementById(
+                'pantalla-login'
+            ).style.display = 'none';
+
+            document.getElementById(
+                'app-contenido'
+            ).style.display = 'block';
+
             cargarDatosDesdeSheets();
+
         }
+
+
+        // =========================================================
+        // LOGOUT
+        // =========================================================
 
         function confirmarCierreSesion() {
-            document.getElementById('modal-logout').style.display = 'flex';
+
+            document.getElementById(
+                'modal-logout'
+            ).style.display = 'flex';
+
         }
+
 
         function cerrarModalLogout() {
-            document.getElementById('modal-logout').style.display = 'none';
+
+            document.getElementById(
+                'modal-logout'
+            ).style.display = 'none';
+
         }
+
 
         function cerrarSesion() {
-            localStorage.removeItem('user_gmail');
+
+            localStorage.removeItem(
+                'user_gmail'
+            );
+
             usuarioSesionActual = null;
+
             location.reload();
+
         }
+
+
+        // =========================================================
+        // CAMBIAR DE VISTA
+        // =========================================================
 
         function mostrarVista(idVista) {
-            document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
-            document.getElementById(idVista).classList.add('activa');
+
+            document
+                .querySelectorAll('.vista')
+                .forEach(v =>
+                    v.classList.remove('activa')
+                );
+
+            document
+                .getElementById(idVista)
+                .classList.add('activa');
+
         }
 
-        function obtenerSiguienteID() {
-            if (registros.length === 0) return 1;
-            const ids = registros.map(r => parseInt(r.id)).filter(id => !isNaN(id));
-            return ids.length === 0 ? 1 : Math.max(...ids) + 1;
-        }
+
+        // =========================================================
+        // NUEVO REGISTRO
+        // =========================================================
 
         btnNuevo.addEventListener('click', () => {
-            document.getElementById('modo-edicion').value = "false";
-            document.getElementById('fecha').valueAsDate = new Date();
-            document.getElementById('id').value = obtenerSiguienteID();
-            document.getElementById('gmail').value = usuarioSesionActual;
+
+            /*
+             * IMPORTANTE:
+             * Ya NO calculamos el ID en el navegador.
+             *
+             * Apps Script será quien genere:
+             *
+             * último ID + 1
+             */
+
+            document.getElementById(
+                'modo-edicion'
+            ).value = "false";
+
+
+            /*
+             * Primero limpiamos el formulario.
+             */
+
             formRegistro.reset();
-            document.getElementById('id').value = obtenerSiguienteID();
-            document.getElementById('gmail').value = usuarioSesionActual;
-            mostrarVista('vista-formulario');
+
+
+            /*
+             * El ID todavía no existe.
+             */
+
+            document.getElementById(
+                'id'
+            ).value = "Se asignará al guardar";
+
+
+            /*
+             * Ponemos la fecha actual
+             * como fecha del registro.
+             */
+
+            const ahora = new Date();
+
+            const yyyy =
+                ahora.getFullYear();
+
+            const mm =
+                String(
+                    ahora.getMonth() + 1
+                ).padStart(2, '0');
+
+            const dd =
+                String(
+                    ahora.getDate()
+                ).padStart(2, '0');
+
+            document.getElementById(
+                'fecha'
+            ).value =
+                `${yyyy}-${mm}-${dd}`;
+
+
+            /*
+             * Usuario actualmente autenticado.
+             */
+
+            document.getElementById(
+                'gmail'
+            ).value =
+                usuarioSesionActual;
+
+
+            /*
+             * Mostramos formulario.
+             */
+
+            mostrarVista(
+                'vista-formulario'
+            );
+
         });
+
+
+        // =========================================================
+        // ATRÁS
+        // =========================================================
 
         btnAtras.addEventListener('click', () => {
+
             formRegistro.reset();
-            document.getElementById('modo-edicion').value = "false";
-            mostrarVista('vista-tabla');
+
+            document.getElementById(
+                'modo-edicion'
+            ).value = "false";
+
+            mostrarVista(
+                'vista-tabla'
+            );
+
         });
 
+
+        // =========================================================
+        // FORMATEAR FECHA
+        // =========================================================
+
         function formatearFecha(fechaTexto) {
-            if (!fechaTexto) return "-";
-            return fechaTexto.includes('T') ? fechaTexto.split('T')[0] : fechaTexto;
+
+            if (!fechaTexto) {
+                return "-";
+            }
+
+            return fechaTexto.includes('T')
+                ? fechaTexto.split('T')[0]
+                : fechaTexto;
+
         }
 
-        function obtenerFechaHoraActual() {
-            const ahora = new Date();
-            const yyyy = ahora.getFullYear();
-            const mm = String(ahora.getMonth() + 1).padStart(2, '0');
-            const dd = String(ahora.getDate()).padStart(2, '0');
-            const hh = String(ahora.getHours()).padStart(2, '0');
-            const min = String(ahora.getMinutes()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
-        }
 
-        function actualizarTabla(listaAMostrar = registros) {
+        // =========================================================
+        // ACTUALIZAR TABLA
+        // =========================================================
+
+        function actualizarTabla(
+            listaAMostrar = registros
+        ) {
+
             tbodyRegistros.innerHTML = '';
-            
-            if(listaAMostrar.length === 0) {
-                tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay registros todavía.</td></tr>';
+
+
+            if (listaAMostrar.length === 0) {
+
+                tbodyRegistros.innerHTML =
+                    '<tr>' +
+                    '<td colspan="9" style="text-align:center;">' +
+                    'No hay registros todavía.' +
+                    '</td>' +
+                    '</tr>';
+
+                return;
+
+            }
+
+
+            listaAMostrar.forEach(reg => {
+
+                const fila =
+                    document.createElement('tr');
+
+
+                const esDueño =
+                    usuarioSesionActual &&
+                    reg.gmail &&
+                    reg.gmail.toLowerCase() ===
+                    usuarioSesionActual.toLowerCase();
+
+
+                fila.innerHTML = `
+
+                    <td>
+                        <strong>
+                            #${reg.id}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${formatearFecha(reg.fecha)}
+                    </td>
+
+                    <td>
+                        ${reg.docente || ""}
+                    </td>
+
+                    <td>
+                        ${reg.sala || ""}
+                    </td>
+
+                    <td>
+                        ${reg.equipo || ""}
+                    </td>
+
+                    <td>
+                        ${reg.estado || ""}
+                    </td>
+
+                    <td>
+                        ${
+                            reg.notas &&
+                            reg.notas.trim() !== ""
+                                ? reg.notas
+                                : "-"
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            reg.ultimaModificacion
+                                ? reg.ultimaModificacion
+                                : "-"
+                        }
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn-tres-puntos"
+                            onclick="manejarClickPuntos(
+                                '${reg.id}',
+                                '${reg.gmail || ""}',
+                                ${esDueño}
+                            )"
+                        >
+                            ⋮
+                        </button>
+
+                    </td>
+
+                `;
+
+                tbodyRegistros.appendChild(
+                    fila
+                );
+
+            });
+
+        }
+
+
+        // =========================================================
+        // MENÚ DE LOS TRES PUNTOS
+        // =========================================================
+
+        function manejarClickPuntos(
+            id,
+            gmail,
+            esDueño
+        ) {
+
+            registroSeleccionadoID =
+                id;
+
+            registroSeleccionadoGmail =
+                gmail;
+
+
+            if (esDueño) {
+
+                document.getElementById(
+                    'titulo-modal-acciones'
+                ).textContent =
+                    `Opciones Registro #${id}`;
+
+
+                document.getElementById(
+                    'modal-acciones-propietario'
+                ).style.display = 'flex';
+
+            } else {
+
+                const autor =
+                    gmail
+                        ? gmail
+                        : "Desconocido";
+
+
+                document.getElementById(
+                    'texto-info-creador'
+                ).innerHTML =
+                    `Este registro fue creado por:<br>
+                    <strong style="color: var(--green-accent);">
+                        ${autor}
+                    </strong>`;
+
+
+                document.getElementById(
+                    'modal-info-creador'
+                ).style.display = 'flex';
+
+            }
+
+        }
+
+
+        // =========================================================
+        // CERRAR MODAL ACCIONES
+        // =========================================================
+
+        function cerrarModalAcciones() {
+
+            document.getElementById(
+                'modal-acciones-propietario'
+            ).style.display = 'none';
+
+        }
+
+
+        // =========================================================
+        // CERRAR MODAL INFO
+        // =========================================================
+
+        function cerrarModalInfo() {
+
+            document.getElementById(
+                'modal-info-creador'
+            ).style.display = 'none';
+
+        }
+
+
+        // =========================================================
+        // MODIFICAR
+        // =========================================================
+
+        function ejecutarModificarDesdeModal() {
+
+            const id =
+                registroSeleccionadoID;
+
+            cerrarModalAcciones();
+
+            cargarRegistroParaModificar(
+                id
+            );
+
+        }
+
+
+        // =========================================================
+        // BORRAR
+        // =========================================================
+
+        function ejecutarBorrarDesdeModal() {
+
+            const id =
+                registroSeleccionadoID;
+
+            const gmail =
+                registroSeleccionadoGmail;
+
+            cerrarModalAcciones();
+
+            abrirModalBorrar(
+                id,
+                gmail
+            );
+
+        }
+
+
+        // =========================================================
+        // BUSCADOR
+        // =========================================================
+
+        function filtrarRegistros() {
+
+            const texto =
+                document.getElementById(
+                    'input-buscador'
+                ).value.toLowerCase();
+
+
+            const filtrados =
+                registros.filter(reg => {
+
+                    const docente =
+                        (reg.docente || "")
+                        .toLowerCase();
+
+                    const sala =
+                        (reg.sala || "")
+                        .toLowerCase();
+
+                    const equipo =
+                        (reg.equipo || "")
+                        .toLowerCase();
+
+                    const estado =
+                        (reg.estado || "")
+                        .toLowerCase();
+
+                    const notas =
+                        (reg.notas || "")
+                        .toLowerCase();
+
+                    const idStr =
+                        String(
+                            reg.id || ""
+                        );
+
+
+                    return (
+                        docente.includes(texto) ||
+                        sala.includes(texto) ||
+                        equipo.includes(texto) ||
+                        estado.includes(texto) ||
+                        notas.includes(texto) ||
+                        idStr.includes(texto)
+                    );
+
+                });
+
+
+            actualizarTabla(
+                filtrados
+            );
+
+        }
+
+
+        // =========================================================
+        // CARGAR REGISTRO PARA MODIFICAR
+        // =========================================================
+
+        function cargarRegistroParaModificar(id) {
+
+            const reg =
+                registros.find(
+                    r =>
+                        String(r.id) ===
+                        String(id)
+                );
+
+
+            if (!reg) {
                 return;
             }
 
-            listaAMostrar.forEach(reg => {
-                const fila = document.createElement('tr');
-                const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
-                
-                fila.innerHTML = `
-                    <td><strong>#${reg.id}</strong></td>
-                    <td>${formatearFecha(reg.fecha)}</td>
-                    <td>${reg.docente}</td>
-                    <td>${reg.sala}</td>
-                    <td>${reg.equipo}</td>
-                    <td>${reg.estado}</td>
-                    <td>${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
-                    <td>${reg.ultimaModificacion ? reg.ultimaModificacion : "-"}</td>
-                    <td>
-                        <button class="btn-tres-puntos" onclick="manejarClickPuntos('${reg.id}', '${reg.gmail || ""}', ${esDueño})">⋮</button>
-                    </td>
-                `;
-                tbodyRegistros.appendChild(fila);
-            });
+
+            document.getElementById(
+                'modo-edicion'
+            ).value = "true";
+
+
+            /*
+             * En modificación el ID queda fijo.
+             */
+
+            document.getElementById(
+                'id'
+            ).value =
+                reg.id;
+
+
+            document.getElementById(
+                'fecha'
+            ).value =
+                formatearFecha(
+                    reg.fecha
+                );
+
+
+            document.getElementById(
+                'docente'
+            ).value =
+                reg.docente || "";
+
+
+            document.getElementById(
+                'sala'
+            ).value =
+                reg.sala || "";
+
+
+            document.getElementById(
+                'equipo'
+            ).value =
+                reg.equipo || "";
+
+
+            document.getElementById(
+                'estado'
+            ).value =
+                reg.estado || "";
+
+
+            document.getElementById(
+                'notas'
+            ).value =
+                reg.notas || "";
+
+
+            document.getElementById(
+                'gmail'
+            ).value =
+                reg.gmail ||
+                usuarioSesionActual;
+
+
+            mostrarVista(
+                'vista-formulario'
+            );
+
         }
 
-        function manejarClickPuntos(id, gmail, esDueño) {
-            registroSeleccionadoID = id;
-            registroSeleccionadoGmail = gmail;
 
-            if (esDueño) {
-                document.getElementById('titulo-modal-acciones').textContent = `Opciones Registro #${id}`;
-                document.getElementById('modal-acciones-propietario').style.display = 'flex';
-            } else {
-                const autor = gmail ? gmail : "Desconocido";
-                document.getElementById('texto-info-creador').innerHTML = `Este registro fue creado por:<br><strong style="color: var(--green-accent);">${autor}</strong>`;
-                document.getElementById('modal-info-creador').style.display = 'flex';
-            }
+        // =========================================================
+        // MODAL BORRAR
+        // =========================================================
+
+        function abrirModalBorrar(
+            id,
+            ownerGmail
+        ) {
+
+            registroSeleccionadoID =
+                id;
+
+            registroSeleccionadoGmail =
+                ownerGmail;
+
+
+            document.getElementById(
+                'texto-modal-borrar'
+            ).textContent =
+                `¿Estás seguro de eliminar el registro #${id}?`;
+
+
+            document.getElementById(
+                'btn-confirmar-borrar'
+            ).onclick =
+                ejecutarEliminacion;
+
+
+            document.getElementById(
+                'modal-borrar'
+            ).style.display =
+                'flex';
+
         }
 
-        function cerrarModalAcciones() {
-            document.getElementById('modal-acciones-propietario').style.display = 'none';
-        }
-
-        function cerrarModalInfo() {
-            document.getElementById('modal-info-creador').style.display = 'none';
-        }
-
-        function ejecutarModificarDesdeModal() {
-            const id = registroSeleccionadoID;
-            cerrarModalAcciones();
-            cargarRegistroParaModificar(id);
-        }
-
-        function ejecutarBorrarDesdeModal() {
-            const id = registroSeleccionadoID;
-            const gmail = registroSeleccionadoGmail;
-            cerrarModalAcciones();
-            abrirModalBorrar(id, gmail);
-        }
-
-        function filtrarRegistros() {
-            const texto = document.getElementById('input-buscador').value.toLowerCase();
-            const filtrados = registros.filter(reg => {
-                const docente = (reg.docente || "").toLowerCase();
-                const sala = (reg.sala || "").toLowerCase();
-                const equipo = (reg.equipo || "").toLowerCase();
-                const estado = (reg.estado || "").toLowerCase();
-                const notas = (reg.notas || "").toLowerCase();
-                const idStr = String(reg.id || "");
-
-                return docente.includes(texto) || sala.includes(texto) || equipo.includes(texto) || estado.includes(texto) || notas.includes(texto) || idStr.includes(texto);
-            });
-            actualizarTabla(filtrados);
-        }
-
-        function cargarRegistroParaModificar(id) {
-            const reg = registros.find(r => String(r.id) === String(id));
-            if (!reg) return;
-
-            document.getElementById('modo-edicion').value = "true";
-            document.getElementById('id').value = reg.id;
-            document.getElementById('fecha').value = formatearFecha(reg.fecha);
-            document.getElementById('docente').value = reg.docente || "";
-            document.getElementById('sala').value = reg.sala || "";
-            document.getElementById('equipo').value = reg.equipo || "";
-            document.getElementById('estado').value = reg.estado || "";
-            document.getElementById('notas').value = reg.notas || "";
-            document.getElementById('gmail').value = reg.gmail || usuarioSesionActual;
-
-            mostrarVista('vista-formulario');
-        }
-
-        function abrirModalBorrar(id, ownerGmail) {
-            registroSeleccionadoID = id;
-            registroSeleccionadoGmail = ownerGmail;
-            document.getElementById('texto-modal-borrar').textContent = `¿Estás seguro de eliminar el registro #${id}?`;
-            document.getElementById('btn-confirmar-borrar').onclick = ejecutarEliminacion;
-            document.getElementById('modal-borrar').style.display = 'flex';
-        }
 
         function cerrarModalBorrar() {
-            document.getElementById('modal-borrar').style.display = 'none';
+
+            document.getElementById(
+                'modal-borrar'
+            ).style.display =
+                'none';
+
         }
+
+
+        // =========================================================
+        // ELIMINAR
+        // =========================================================
 
         function ejecutarEliminacion() {
-            const id = registroSeleccionadoID;
-            const gmail = registroSeleccionadoGmail;
+
+            const id =
+                registroSeleccionadoID;
+
+            const gmail =
+                registroSeleccionadoGmail;
+
+
             cerrarModalBorrar();
 
-            fetch(URL_SCRIPT, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'delete',
-                    id: id,
-                    gmail: gmail
-                })
-            })
+
+            fetch(
+                URL_SCRIPT,
+                {
+                    method: 'POST',
+
+                    mode: 'no-cors',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+
+                        action: 'delete',
+
+                        id: id,
+
+                        gmail: gmail
+
+                    })
+                }
+            )
+
             .then(() => {
-                alert("Registro eliminado.");
-                registros = registros.filter(r => r.id.toString() !== id.toString());
-                filtrarRegistros();
+
+                /*
+                 * Volvemos a leer Sheets.
+                 * Así la tabla queda sincronizada
+                 * con los datos reales.
+                 */
+
+                return cargarDatosDesdeSheets();
+
             })
-            .catch(err => alert("Error al intentar eliminar."));
+
+            .then(() => {
+
+                alert(
+                    "Registro eliminado."
+                );
+
+            })
+
+            .catch(err => {
+
+                console.error(
+                    "Error al eliminar:",
+                    err
+                );
+
+                alert(
+                    "Error al intentar eliminar."
+                );
+
+            });
+
         }
 
-        formRegistro.addEventListener('submit', function(evento) {
-            evento.preventDefault();
 
-            const botonAceptar = formRegistro.querySelector('.btn-aceptar');
-            botonAceptar.textContent = "Guardando...";
-            botonAceptar.disabled = true;
+        // =========================================================
+        // GUARDAR / MODIFICAR
+        // =========================================================
 
-            const esEdicion = document.getElementById('modo-edicion').value === "true";
-            const fechaHoraActual = obtenerFechaHoraActual();
-            const idReg = document.getElementById('id').value;
+        formRegistro.addEventListener(
+            'submit',
+            function(evento) {
 
-            const datosRegistro = {
-                id: idReg,
-                fecha: document.getElementById('fecha').value,
-                docente: document.getElementById('docente').value,
-                sala: document.getElementById('sala').value,
-                equipo: document.getElementById('equipo').value,
-                estado: document.getElementById('estado').value,
-                notas: document.getElementById('notas').value,
-                ultimaModificacion: fechaHoraActual,
-                gmail: usuarioSesionActual
-            };
+                evento.preventDefault();
 
-            fetch(URL_SCRIPT, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datosRegistro)
-            })
-            .then(() => {
-                alert(esEdicion ? "¡Registro modificado con éxito!" : "¡Registro guardado con éxito!");
-                
-                if (esEdicion) {
-                    const index = registros.findIndex(r => String(r.id) === String(idReg));
-                    if (index !== -1) {
-                        registros[index] = datosRegistro;
+
+                const botonAceptar =
+                    formRegistro.querySelector(
+                        '.btn-aceptar'
+                    );
+
+
+                botonAceptar.textContent =
+                    "Guardando...";
+
+                botonAceptar.disabled =
+                    true;
+
+
+                const esEdicion =
+                    document.getElementById(
+                        'modo-edicion'
+                    ).value === "true";
+
+
+                /*
+                 * Para un registro nuevo:
+                 *
+                 * action = create
+                 * id = ""
+                 *
+                 * Apps Script genera el ID.
+                 *
+                 *
+                 * Para una modificación:
+                 *
+                 * action = update
+                 * id = ID existente
+                 */
+
+                const datosRegistro = {
+
+                    action:
+                        esEdicion
+                            ? "update"
+                            : "create",
+
+                    id:
+                        esEdicion
+                            ? document.getElementById(
+                                'id'
+                              ).value
+                            : "",
+
+                    fecha:
+                        document.getElementById(
+                            'fecha'
+                        ).value,
+
+                    docente:
+                        document.getElementById(
+                            'docente'
+                        ).value,
+
+                    sala:
+                        document.getElementById(
+                            'sala'
+                        ).value,
+
+                    equipo:
+                        document.getElementById(
+                            'equipo'
+                        ).value,
+
+                    estado:
+                        document.getElementById(
+                            'estado'
+                        ).value,
+
+                    notas:
+                        document.getElementById(
+                            'notas'
+                        ).value,
+
+                    gmail:
+                        usuarioSesionActual
+
+                };
+
+
+                fetch(
+                    URL_SCRIPT,
+                    {
+                        method: 'POST',
+
+                        mode: 'no-cors',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+
+                        body:
+                            JSON.stringify(
+                                datosRegistro
+                            )
                     }
-                } else {
-                    registros.push(datosRegistro);
-                }
+                )
 
-                filtrarRegistros();
-                formRegistro.reset();
-                document.getElementById('modo-edicion').value = "false";
-                mostrarVista('vista-tabla');
-            })
-            .catch(error => alert('Error al guardar.'))
-            .finally(() => {
-                botonAceptar.textContent = "Aceptar";
-                botonAceptar.disabled = false;
-            });
-        });
+                .then(() => {
+
+                    /*
+                     * NO agregamos manualmente el registro
+                     * al array.
+                     *
+                     * Volvemos a consultar Sheets para obtener:
+                     *
+                     * - ID real
+                     * - Última modificación real
+                     * - Datos guardados realmente
+                     */
+
+                    return cargarDatosDesdeSheets();
+
+                })
+
+                .then(() => {
+
+                    alert(
+                        esEdicion
+                            ? "¡Registro modificado con éxito!"
+                            : "¡Registro guardado con éxito!"
+                    );
+
+
+                    formRegistro.reset();
+
+
+                    document.getElementById(
+                        'modo-edicion'
+                    ).value =
+                        "false";
+
+
+                    mostrarVista(
+                        'vista-tabla'
+                    );
+
+                })
+
+                .catch(error => {
+
+                    console.error(
+                        "Error al guardar:",
+                        error
+                    );
+
+                    alert(
+                        "Error al guardar el registro."
+                    );
+
+                })
+
+                .finally(() => {
+
+                    botonAceptar.textContent =
+                        "Aceptar";
+
+                    botonAceptar.disabled =
+                        false;
+
+                });
+
+            }
+        );
+
+
+        // =========================================================
+        // CARGAR DATOS DESDE GOOGLE SHEETS
+        // =========================================================
 
         function cargarDatosDesdeSheets() {
-            fetch(URL_SCRIPT)
-                .then(response => response.json())
-                .then(data => {
-                    registros = data;
-                    filtrarRegistros();
-                })
-                .catch(err => console.error("Error al cargar datos:", err));
+
+            return fetch(
+                URL_SCRIPT
+            )
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "No se pudieron obtener los datos."
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(data => {
+
+                registros =
+                    Array.isArray(data)
+                        ? data
+                        : [];
+
+
+                filtrarRegistros();
+
+
+                /*
+                 * Permite hacer:
+                 *
+                 * cargarDatosDesdeSheets().then(...)
+                 */
+
+                return registros;
+
+            })
+
+            .catch(err => {
+
+                console.error(
+                    "Error al cargar datos:",
+                    err
+                );
+
+                throw err;
+
+            });
+
         }
+
     </script>
+
 </body>
 </html>
