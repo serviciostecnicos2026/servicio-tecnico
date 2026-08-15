@@ -165,8 +165,6 @@
             text-align: left;
             border-bottom: 1px solid var(--gray-light);
             border-right: 1px solid var(--gray-light);
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         th {
@@ -221,11 +219,6 @@
             font-size: 0.8rem;
         }
 
-        .acciones-menu-container {
-            position: relative;
-            display: inline-block;
-        }
-
         .btn-tres-puntos {
             background: none;
             border: none;
@@ -240,44 +233,7 @@
             background-color: var(--gray-light);
         }
 
-        .dropdown-opciones {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background: var(--white);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid var(--gray-light);
-            border-radius: 6px;
-            z-index: 50;
-            min-width: 120px;
-            overflow: hidden;
-        }
-
-        .dropdown-opciones.mostrar {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 10px 15px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-align: left;
-            border: none;
-            background: none;
-            width: 100%;
-            color: var(--text-color);
-            display: block;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f1f3f5;
-        }
-
-        .dropdown-item.borrar {
-            color: var(--red-accent);
-        }
-
+        /* Estilos de Pop-ups unificados */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -314,13 +270,20 @@
             justify-content: center;
         }
 
+        .modal-acciones-columna {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
         .modal-btn {
-            padding: 8px 20px;
+            padding: 10px 20px;
             border: none;
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            width: 100%;
         }
 
         .modal-btn-no {
@@ -330,6 +293,11 @@
 
         .modal-btn-si {
             background-color: var(--red-accent);
+            color: var(--white);
+        }
+
+        .modal-btn-modificar {
+            background-color: var(--green-accent);
             color: var(--white);
         }
 
@@ -392,7 +360,6 @@
             h2 { font-size: 1rem; }
             .logo-header { height: 35px; }
             th, td { padding: 8px 6px; font-size: 0.75rem; }
-            .col-gmail, th:nth-child(8), td:nth-child(8) { display: none; }
         }
     </style>
 </head>
@@ -441,7 +408,6 @@
                             <th>Estado</th>
                             <th>Notas</th>
                             <th>Última Modificación</th>
-                            <th class="col-gmail">Gmail</th>
                             <th class="col-acciones-invidible">Acciones</th>
                         </tr>
                     </thead>
@@ -523,6 +489,28 @@
         </div>
     </div>
 
+    <!-- POP-UP DE ACCIONES ( PROPIETARIO ) -->
+    <div id="modal-acciones-propietario" class="modal-overlay">
+        <div class="modal-card">
+            <p id="titulo-modal-acciones">Opciones del Registro</p>
+            <div class="modal-acciones-columna">
+                <button class="modal-btn modal-btn-modificar" onclick="ejecutarModificarDesdeModal()">Modificar</button>
+                <button class="modal-btn modal-btn-si" onclick="ejecutarBorrarDesdeModal()">Borrar</button>
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalAcciones()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP DE INFORMACIÓN ( TERCEROS / INFO DE CREADOR ) -->
+    <div id="modal-info-creador" class="modal-overlay">
+        <div class="modal-card">
+            <p id="texto-info-creador" style="font-size: 0.95rem; line-height: 1.4;"></p>
+            <div class="modal-acciones">
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalInfo()">Entendido</button>
+            </div>
+        </div>
+    </div>
+
     <!-- POP-UP DE CONFIRMACIÓN DE BORRADO -->
     <div id="modal-borrar" class="modal-overlay">
         <div class="modal-card">
@@ -546,20 +534,12 @@
 
         let usuarioSesionActual = localStorage.getItem('user_gmail') || null;
         let registros = [];
-        let idRegistroAEliminar = null;
-        let gmailRegistroAEliminar = null;
+        let registroSeleccionadoID = null;
+        let registroSeleccionadoGmail = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             if (usuarioSesionActual) {
                 activarSesion(usuarioSesionActual);
-            }
-        });
-
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.acciones-menu-container')) {
-                document.querySelectorAll('.dropdown-opciones').forEach(menu => {
-                    menu.classList.remove('mostrar');
-                });
             }
         });
 
@@ -648,7 +628,7 @@
             tbodyRegistros.innerHTML = '';
             
             if(listaAMostrar.length === 0) {
-                tbodyRegistros.innerHTML = '<tr><td colspan="10" style="text-align:center;">No hay registros todavía.</td></tr>';
+                tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay registros todavía.</td></tr>';
                 return;
             }
 
@@ -656,19 +636,6 @@
                 const fila = document.createElement('tr');
                 const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
                 
-                let accionesHtml = `<span style="color:#aaa;">-</span>`;
-                if (esDueño) {
-                    accionesHtml = `
-                        <div class="acciones-menu-container">
-                            <button class="btn-tres-puntos" onclick="toggleMenu(event, '${reg.id}')">⋮</button>
-                            <div id="menu-${reg.id}" class="dropdown-opciones">
-                                <button class="dropdown-item" onclick="cargarRegistroParaModificar('${reg.id}')">Modificar</button>
-                                <button class="dropdown-item borrar" onclick="abrirModalBorrar('${reg.id}', '${reg.gmail}')">Borrar</button>
-                            </div>
-                        </div>
-                    `;
-                }
-
                 fila.innerHTML = `
                     <td><strong>#${reg.id}</strong></td>
                     <td>${formatearFecha(reg.fecha)}</td>
@@ -678,20 +645,47 @@
                     <td>${reg.estado}</td>
                     <td>${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
                     <td>${reg.ultimaModificacion ? reg.ultimaModificacion : "-"}</td>
-                    <td class="col-gmail">${reg.gmail}</td>
-                    <td>${accionesHtml}</td>
+                    <td>
+                        <button class="btn-tres-puntos" onclick="manejarClickPuntos('${reg.id}', '${reg.gmail || ""}', ${esDueño})">⋮</button>
+                    </td>
                 `;
                 tbodyRegistros.appendChild(fila);
             });
         }
 
-        function toggleMenu(event, id) {
-            event.stopPropagation();
-            const menuActual = document.getElementById(`menu-${id}`);
-            document.querySelectorAll('.dropdown-opciones').forEach(m => {
-                if (m !== menuActual) m.classList.remove('mostrar');
-            });
-            menuActual.classList.toggle('mostrar');
+        function manejarClickPuntos(id, gmail, esDueño) {
+            registroSeleccionadoID = id;
+            registroSeleccionadoGmail = gmail;
+
+            if (esDueño) {
+                document.getElementById('titulo-modal-acciones').textContent = `Opciones Registro #${id}`;
+                document.getElementById('modal-acciones-propietario').style.display = 'flex';
+            } else {
+                const autor = gmail ? gmail : "Desconocido";
+                document.getElementById('texto-info-creador').innerHTML = `Este registro fue creado por:<br><strong style="color: var(--green-accent);">${autor}</strong>`;
+                document.getElementById('modal-info-creador').style.display = 'flex';
+            }
+        }
+
+        function cerrarModalAcciones() {
+            document.getElementById('modal-acciones-propietario').style.display = 'none';
+        }
+
+        function cerrarModalInfo() {
+            document.getElementById('modal-info-creador').style.display = 'none';
+        }
+
+        function ejecutarModificarDesdeModal() {
+            const id = registroSeleccionadoID;
+            cerrarModalAcciones();
+            cargarRegistroParaModificar(id);
+        }
+
+        function ejecutarBorrarDesdeModal() {
+            const id = registroSeleccionadoID;
+            const gmail = registroSeleccionadoGmail;
+            cerrarModalAcciones();
+            abrirModalBorrar(id, gmail);
         }
 
         function filtrarRegistros() {
@@ -727,12 +721,8 @@
         }
 
         function abrirModalBorrar(id, ownerGmail) {
-            if (usuarioSesionActual.toLowerCase() !== ownerGmail.toLowerCase()) {
-                alert("Solo puedes eliminar tus propios registros.");
-                return;
-            }
-            idRegistroAEliminar = id;
-            gmailRegistroAEliminar = ownerGmail;
+            registroSeleccionadoID = id;
+            registroSeleccionadoGmail = ownerGmail;
             document.getElementById('texto-modal-borrar').textContent = `¿Estás seguro de eliminar el registro #${id}?`;
             document.getElementById('btn-confirmar-borrar').onclick = ejecutarEliminacion;
             document.getElementById('modal-borrar').style.display = 'flex';
@@ -740,13 +730,11 @@
 
         function cerrarModalBorrar() {
             document.getElementById('modal-borrar').style.display = 'none';
-            idRegistroAEliminar = null;
-            gmailRegistroAEliminar = null;
         }
 
         function ejecutarEliminacion() {
-            const id = idRegistroAEliminar;
-            const gmail = gmailRegistroAEliminar;
+            const id = registroSeleccionadoID;
+            const gmail = registroSeleccionadoGmail;
             cerrarModalBorrar();
 
             fetch(URL_SCRIPT, {
