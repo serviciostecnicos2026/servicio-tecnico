@@ -54,6 +54,7 @@
             height: 45px;
             width: auto;
             object-fit: contain;
+            display: block !important;
         }
 
         h2 {
@@ -92,7 +93,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Pantalla de Inicio de Sesión Simple */
         #pantalla-login {
             text-align: center;
             padding: 40px 20px;
@@ -102,6 +102,47 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             border: 1px solid var(--gray-light);
+        }
+
+        .search-container {
+            margin-bottom: 15px;
+            width: 100%;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--gray-light);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            outline: none;
+        }
+
+        .search-container::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--gray-dark);
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+
+        .search-container::after {
+            content: "";
+            position: absolute;
+            left: 26px;
+            top: calc(50% + 4px);
+            width: 6px;
+            height: 2px;
+            background-color: var(--gray-dark);
+            transform: rotate(45deg);
         }
 
         .tabla-contenedor {
@@ -116,10 +157,11 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid var(--gray-light);
             border-right: 1px solid var(--gray-light);
@@ -133,7 +175,14 @@
             white-space: nowrap;
         }
 
-        td { font-size: 0.9rem; }
+        th.col-acciones-invidible {
+            color: transparent;
+            background-color: transparent;
+            border: none;
+            width: 40px;
+        }
+
+        td { font-size: 0.85rem; }
 
         .btn-flotante {
             position: fixed;
@@ -152,26 +201,13 @@
             align-items: center;
             justify-content: center;
             transition: background 0.3s, transform 0.2s;
+            z-index: 90;
         }
 
         .btn-flotante:hover {
             background-color: var(--green-hover);
             transform: scale(1.05);
         }
-
-        .btn-borrar {
-            background-color: var(--red-accent);
-            color: var(--white);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn-borrar:hover { background-color: var(--red-hover); }
 
         .btn-logout {
             background-color: #666;
@@ -181,6 +217,88 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.8rem;
+        }
+
+        .btn-tres-puntos {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 2px 8px;
+            color: var(--gray-dark);
+            border-radius: 4px;
+        }
+
+        .btn-tres-puntos:hover {
+            background-color: var(--gray-light);
+        }
+
+        /* Estilos de Pop-ups unificados */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        }
+
+        .modal-card p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .modal-acciones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-acciones-columna {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .modal-btn-no {
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+        }
+
+        .modal-btn-si {
+            background-color: var(--red-accent);
+            color: var(--white);
+        }
+
+        .modal-btn-modificar {
+            background-color: var(--green-accent);
+            color: var(--white);
         }
 
         form {
@@ -233,32 +351,43 @@
             font-weight: 600;
             cursor: pointer;
         }
+        
+        /* Agrega esto a tu CSS */
+td {
+  word-wrap: break-word;     /* Rompe palabras largas */
+  white-space: normal;       /* Permite saltos de línea */
+  max-width: 150px;          /* Ajusta según el ancho que quieras */
+  vertical-align: top;       /* Alinea el texto arriba */
+}
 
         .btn-atras { background-color: var(--gray-dark); color: var(--white); }
         .btn-aceptar { background-color: var(--green-accent); color: var(--white); }
-        .btn-ingresar { background-color: var(--green-accent); color: var(--white); width: 100%; margin-top: 10px; }
+
+        @media screen and (max-width: 768px) {
+            header { padding: 10px 15px; }
+            h2 { font-size: 1rem; }
+            .logo-header { height: 35px; }
+            th, td { padding: 8px 6px; font-size: 0.75rem; }
+        }
     </style>
 </head>
 <body>
 
     <header>
         <div class="header-brand">
-            <img src="logo.png" alt="Logo" class="logo-header" onerror="this.style.display='none'">
+            <img src="logo.png" alt="Logo" class="logo-header" onerror="this.src='https://via.placeholder.com/45?text=LOGO'">
             <h2>SERVICIO TÉCNICO EETP №277</h2>
         </div>
         <div class="user-status" id="user-status-container">
             <span id="user-email-display" style="display:none;"></span>
-            <button class="btn-logout" id="btn-logout" style="display:none;" onclick="cerrarSesion()">Salir</button>
+            <button class="btn-logout" id="btn-logout" style="display:none;" onclick="confirmarCierreSesion()">Salir</button>
         </div>
     </header>
 
-    <!-- INICIO DE SESIÓN SIMPLE -->
-   <!-- PANTALLA DE ACCESO CON BOTÓN REAL DE GOOGLE -->
     <div id="pantalla-login">
         <h3 style="margin-bottom: 10px;">Servicio Técnico</h3>
         <p style="margin-bottom: 25px; color: #666; font-size: 0.9rem;">Accede con tu cuenta oficial de Google para registrar o eliminar tus reportes.</p>
         
-        <!-- BOTÓN GOOGLE CON TU CLIENT ID -->
         <div style="display: flex; justify-content: center;">
             <div id="g_id_onload"
                 data-client_id="539814549126-opqkfu4ckl6kgsn30s5tqmvoois5ebth.apps.googleusercontent.com"
@@ -269,11 +398,12 @@
         </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <div id="app-contenido" style="display: none;">
         
-        <!-- VISTA 1: TABLA PRINCIPAL -->
         <div id="vista-tabla" class="vista activa">
+            <div class="search-container">
+                <input type="text" id="input-buscador" class="search-input" placeholder="Buscar por docente, sala, equipo o estado..." oninput="filtrarRegistros()">
+            </div>
             <div class="tabla-contenedor">
                 <table id="tabla-registros">
                     <thead>
@@ -285,28 +415,27 @@
                             <th>Equipo</th>
                             <th>Estado</th>
                             <th>Notas</th>
-                            <th>Gmail</th>
-                            <th>Acciones</th>
+                            <th>Última Modificación</th>
+                            <th class="col-acciones-invidible">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Carga dinámica -->
                     </tbody>
                 </table>
             </div>
             <button class="btn-flotante" id="btn-nuevo">+</button>
         </div>
 
-        <!-- VISTA 2: FORMULARIO -->
         <div id="vista-formulario" class="vista">
             <form id="form-registro">
+                <input type="hidden" id="modo-edicion" value="false">
                 <div class="grupo-form">
                     <label for="id">ID (Autogenerado)</label>
                     <input type="text" id="id" readonly placeholder="Calculando ID...">
                 </div>
 
                 <div class="grupo-form">
-                    <label for="fecha">Fecha *</label>
+                    <label for="fecha">Fecha del Registro *</label>
                     <input type="date" id="fecha" required>
                 </div>
 
@@ -344,7 +473,7 @@
                     <textarea id="notas" placeholder="Describe el detalle del servicio técnico..."></textarea>
                 </div>
 
-                <div class="grupo-form">
+                <div class="grupo-form" style="display:none;">
                     <label for="gmail">Gmail (Autenticado)</label>
                     <input type="email" id="gmail" readonly>
                 </div>
@@ -354,6 +483,50 @@
                     <button type="submit" class="btn btn-aceptar">Aceptar</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- POP-UP DE CIERRE DE SESIÓN -->
+    <div id="modal-logout" class="modal-overlay">
+        <div class="modal-card">
+            <p>¿Estás seguro que querés salir?</p>
+            <div class="modal-acciones">
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalLogout()">No</button>
+                <button class="modal-btn modal-btn-si" onclick="cerrarSesion()">Sí</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP DE ACCIONES ( PROPIETARIO ) -->
+    <div id="modal-acciones-propietario" class="modal-overlay">
+        <div class="modal-card">
+            <p id="titulo-modal-acciones">Opciones del Registro</p>
+            <div class="modal-acciones-columna">
+                <button class="modal-btn modal-btn-modificar" onclick="ejecutarModificarDesdeModal()">Modificar</button>
+                <button class="modal-btn modal-btn-si" onclick="ejecutarBorrarDesdeModal()">Borrar</button>
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalAcciones()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP DE INFORMACIÓN ( TERCEROS / INFO DE CREADOR ) -->
+    <div id="modal-info-creador" class="modal-overlay">
+        <div class="modal-card">
+            <p id="texto-info-creador" style="font-size: 0.95rem; line-height: 1.4;"></p>
+            <div class="modal-acciones">
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalInfo()">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP DE CONFIRMACIÓN DE BORRADO -->
+    <div id="modal-borrar" class="modal-overlay">
+        <div class="modal-card">
+            <p id="texto-modal-borrar">¿Estás seguro de eliminar este registro?</p>
+            <div class="modal-acciones">
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalBorrar()">No</button>
+                <button class="modal-btn modal-btn-si" id="btn-confirmar-borrar">Sí</button>
+            </div>
         </div>
     </div>
 
@@ -369,6 +542,8 @@
 
         let usuarioSesionActual = localStorage.getItem('user_gmail') || null;
         let registros = [];
+        let registroSeleccionadoID = null;
+        let registroSeleccionadoGmail = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             if (usuarioSesionActual) {
@@ -376,7 +551,6 @@
             }
         });
 
-        // 🟢 FUNCIÓN QUE FALTABA: Procesa el token seguro de Google
         function manejarLoginGoogle(response) {
             try {
                 const base64Url = response.credential.split('.')[1];
@@ -394,27 +568,24 @@
         }
 
         function activarSesion(email) {
-            document.getElementById('user-email-display').style.display = 'inline';
-            document.getElementById('user-email-display').textContent = email;
+            document.getElementById('user-email-display').style.display = 'none';
             document.getElementById('btn-logout').style.display = 'inline';
-            
             document.getElementById('pantalla-login').style.display = 'none';
             document.getElementById('app-contenido').style.display = 'block';
-
             cargarDatosDesdeSheets();
+        }
+
+        function confirmarCierreSesion() {
+            document.getElementById('modal-logout').style.display = 'flex';
+        }
+
+        function cerrarModalLogout() {
+            document.getElementById('modal-logout').style.display = 'none';
         }
 
         function cerrarSesion() {
             localStorage.removeItem('user_gmail');
             usuarioSesionActual = null;
-            
-            document.getElementById('user-email-display').style.display = 'none';
-            document.getElementById('btn-logout').style.display = 'none';
-            
-            document.getElementById('pantalla-login').style.display = 'block';
-            document.getElementById('app-contenido').style.display = 'none';
-            
-            // Recarga la página para limpiar el botón de Google correctamente
             location.reload();
         }
 
@@ -430,7 +601,11 @@
         }
 
         btnNuevo.addEventListener('click', () => {
+            document.getElementById('modo-edicion').value = "false";
             document.getElementById('fecha').valueAsDate = new Date();
+            document.getElementById('id').value = obtenerSiguienteID();
+            document.getElementById('gmail').value = usuarioSesionActual;
+            formRegistro.reset();
             document.getElementById('id').value = obtenerSiguienteID();
             document.getElementById('gmail').value = usuarioSesionActual;
             mostrarVista('vista-formulario');
@@ -438,6 +613,7 @@
 
         btnAtras.addEventListener('click', () => {
             formRegistro.reset();
+            document.getElementById('modo-edicion').value = "false";
             mostrarVista('vista-tabla');
         });
 
@@ -446,22 +622,28 @@
             return fechaTexto.includes('T') ? fechaTexto.split('T')[0] : fechaTexto;
         }
 
-        function actualizarTabla() {
+        function obtenerFechaHoraActual() {
+            const ahora = new Date();
+            const yyyy = ahora.getFullYear();
+            const mm = String(ahora.getMonth() + 1).padStart(2, '0');
+            const dd = String(ahora.getDate()).padStart(2, '0');
+            const hh = String(ahora.getHours()).padStart(2, '0');
+            const min = String(ahora.getMinutes()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+        }
+
+        function actualizarTabla(listaAMostrar = registros) {
             tbodyRegistros.innerHTML = '';
             
-            if(registros.length === 0) {
+            if(listaAMostrar.length === 0) {
                 tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay registros todavía.</td></tr>';
                 return;
             }
 
-            registros.forEach(reg => {
+            listaAMostrar.forEach(reg => {
                 const fila = document.createElement('tr');
                 const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
                 
-                const botonBorrar = esDueño 
-                    ? `<button class="btn-borrar" onclick="eliminarRegistro('${reg.id}', '${reg.gmail}')">🗑️ Borrar</button>`
-                    : `<span style="color:#aaa;">-</span>`;
-
                 fila.innerHTML = `
                     <td><strong>#${reg.id}</strong></td>
                     <td>${formatearFecha(reg.fecha)}</td>
@@ -470,22 +652,98 @@
                     <td>${reg.equipo}</td>
                     <td>${reg.estado}</td>
                     <td>${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
-                    <td>${reg.gmail}</td>
-                    <td>${botonBorrar}</td>
+                    <td>${reg.ultimaModificacion ? reg.ultimaModificacion : "-"}</td>
+                    <td>
+                        <button class="btn-tres-puntos" onclick="manejarClickPuntos('${reg.id}', '${reg.gmail || ""}', ${esDueño})">⋮</button>
+                    </td>
                 `;
                 tbodyRegistros.appendChild(fila);
             });
         }
 
-        function eliminarRegistro(id, ownerGmail) {
-            if (usuarioSesionActual.toLowerCase() !== ownerGmail.toLowerCase()) {
-                alert("Solo puedes eliminar tus propios registros.");
-                return;
-            }
+        function manejarClickPuntos(id, gmail, esDueño) {
+            registroSeleccionadoID = id;
+            registroSeleccionadoGmail = gmail;
 
-            if (!confirm(`¿Estás seguro de eliminar el registro #${id}?`)) {
-                return;
+            if (esDueño) {
+                document.getElementById('titulo-modal-acciones').textContent = `Opciones Registro #${id}`;
+                document.getElementById('modal-acciones-propietario').style.display = 'flex';
+            } else {
+                const autor = gmail ? gmail : "Desconocido";
+                document.getElementById('texto-info-creador').innerHTML = `Este registro fue creado por:<br><strong style="color: var(--green-accent);">${autor}</strong>`;
+                document.getElementById('modal-info-creador').style.display = 'flex';
             }
+        }
+
+        function cerrarModalAcciones() {
+            document.getElementById('modal-acciones-propietario').style.display = 'none';
+        }
+
+        function cerrarModalInfo() {
+            document.getElementById('modal-info-creador').style.display = 'none';
+        }
+
+        function ejecutarModificarDesdeModal() {
+            const id = registroSeleccionadoID;
+            cerrarModalAcciones();
+            cargarRegistroParaModificar(id);
+        }
+
+        function ejecutarBorrarDesdeModal() {
+            const id = registroSeleccionadoID;
+            const gmail = registroSeleccionadoGmail;
+            cerrarModalAcciones();
+            abrirModalBorrar(id, gmail);
+        }
+
+        function filtrarRegistros() {
+            const texto = document.getElementById('input-buscador').value.toLowerCase();
+            const filtrados = registros.filter(reg => {
+                const docente = (reg.docente || "").toLowerCase();
+                const sala = (reg.sala || "").toLowerCase();
+                const equipo = (reg.equipo || "").toLowerCase();
+                const estado = (reg.estado || "").toLowerCase();
+                const notas = (reg.notas || "").toLowerCase();
+                const idStr = String(reg.id || "");
+
+                return docente.includes(texto) || sala.includes(texto) || equipo.includes(texto) || estado.includes(texto) || notas.includes(texto) || idStr.includes(texto);
+            });
+            actualizarTabla(filtrados);
+        }
+
+        function cargarRegistroParaModificar(id) {
+            const reg = registros.find(r => String(r.id) === String(id));
+            if (!reg) return;
+
+            document.getElementById('modo-edicion').value = "true";
+            document.getElementById('id').value = reg.id;
+            document.getElementById('fecha').value = formatearFecha(reg.fecha);
+            document.getElementById('docente').value = reg.docente || "";
+            document.getElementById('sala').value = reg.sala || "";
+            document.getElementById('equipo').value = reg.equipo || "";
+            document.getElementById('estado').value = reg.estado || "";
+            document.getElementById('notas').value = reg.notas || "";
+            document.getElementById('gmail').value = reg.gmail || usuarioSesionActual;
+
+            mostrarVista('vista-formulario');
+        }
+
+        function abrirModalBorrar(id, ownerGmail) {
+            registroSeleccionadoID = id;
+            registroSeleccionadoGmail = ownerGmail;
+            document.getElementById('texto-modal-borrar').textContent = `¿Estás seguro de eliminar el registro #${id}?`;
+            document.getElementById('btn-confirmar-borrar').onclick = ejecutarEliminacion;
+            document.getElementById('modal-borrar').style.display = 'flex';
+        }
+
+        function cerrarModalBorrar() {
+            document.getElementById('modal-borrar').style.display = 'none';
+        }
+
+        function ejecutarEliminacion() {
+            const id = registroSeleccionadoID;
+            const gmail = registroSeleccionadoGmail;
+            cerrarModalBorrar();
 
             fetch(URL_SCRIPT, {
                 method: 'POST',
@@ -494,13 +752,13 @@
                 body: JSON.stringify({
                     action: 'delete',
                     id: id,
-                    gmail: usuarioSesionActual
+                    gmail: gmail
                 })
             })
             .then(() => {
                 alert("Registro eliminado.");
                 registros = registros.filter(r => r.id.toString() !== id.toString());
-                actualizarTabla();
+                filtrarRegistros();
             })
             .catch(err => alert("Error al intentar eliminar."));
         }
@@ -512,14 +770,19 @@
             botonAceptar.textContent = "Guardando...";
             botonAceptar.disabled = true;
 
-            const nuevoRegistro = {
-                id: document.getElementById('id').value,
+            const esEdicion = document.getElementById('modo-edicion').value === "true";
+            const fechaHoraActual = obtenerFechaHoraActual();
+            const idReg = document.getElementById('id').value;
+
+            const datosRegistro = {
+                id: idReg,
                 fecha: document.getElementById('fecha').value,
                 docente: document.getElementById('docente').value,
                 sala: document.getElementById('sala').value,
                 equipo: document.getElementById('equipo').value,
                 estado: document.getElementById('estado').value,
                 notas: document.getElementById('notas').value,
+                ultimaModificacion: fechaHoraActual,
                 gmail: usuarioSesionActual
             };
 
@@ -527,13 +790,23 @@
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevoRegistro)
+                body: JSON.stringify(datosRegistro)
             })
             .then(() => {
-                alert("¡Registro guardado con éxito!");
-                registros.push(nuevoRegistro);
-                actualizarTabla();
+                alert(esEdicion ? "¡Registro modificado con éxito!" : "¡Registro guardado con éxito!");
+                
+                if (esEdicion) {
+                    const index = registros.findIndex(r => String(r.id) === String(idReg));
+                    if (index !== -1) {
+                        registros[index] = datosRegistro;
+                    }
+                } else {
+                    registros.push(datosRegistro);
+                }
+
+                filtrarRegistros();
                 formRegistro.reset();
+                document.getElementById('modo-edicion').value = "false";
                 mostrarVista('vista-tabla');
             })
             .catch(error => alert('Error al guardar.'))
@@ -548,11 +821,10 @@
                 .then(response => response.json())
                 .then(data => {
                     registros = data;
-                    actualizarTabla();
+                    filtrarRegistros();
                 })
                 .catch(err => console.error("Error al cargar datos:", err));
         }
-    
     </script>
 </body>
 </html>
