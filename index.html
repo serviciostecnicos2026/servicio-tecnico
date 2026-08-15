@@ -104,6 +104,22 @@
             border: 1px solid var(--gray-light);
         }
 
+        /* Barra de Búsqueda */
+        .search-container {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
         .tabla-contenedor {
             background: var(--white);
             border-radius: 8px;
@@ -116,13 +132,16 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid var(--gray-light);
             border-right: 1px solid var(--gray-light);
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         th {
@@ -133,7 +152,7 @@
             white-space: nowrap;
         }
 
-        td { font-size: 0.9rem; }
+        td { font-size: 0.85rem; }
 
         .btn-flotante {
             position: fixed;
@@ -152,26 +171,13 @@
             align-items: center;
             justify-content: center;
             transition: background 0.3s, transform 0.2s;
+            z-Index: 90;
         }
 
         .btn-flotante:hover {
             background-color: var(--green-hover);
             transform: scale(1.05);
         }
-
-        .btn-borrar {
-            background-color: var(--red-accent);
-            color: var(--white);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn-borrar:hover { background-color: var(--red-hover); }
 
         .btn-logout {
             background-color: #666;
@@ -181,6 +187,126 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.8rem;
+        }
+
+        /* Menú de Tres Puntitos y Popups */
+        .acciones-menu-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-tres-puntos {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 2px 8px;
+            color: var(--gray-dark);
+            border-radius: 4px;
+        }
+
+        .btn-tres-puntos:hover {
+            background-color: var(--gray-light);
+        }
+
+        .dropdown-opciones {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: var(--white);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid var(--gray-light);
+            border-radius: 6px;
+            z-index: 50;
+            min-width: 120px;
+            overflow: hidden;
+        }
+
+        .dropdown-opciones.mostrar {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: left;
+            border: none;
+            background: none;
+            width: 100%;
+            color: var(--text-color);
+            display: block;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f3f5;
+        }
+
+        .dropdown-item.borrar {
+            color: var(--red-accent);
+        }
+
+        /* Pop-up genérico */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .modal-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-card p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .modal-acciones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .modal-btn-no {
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+        }
+
+        .modal-btn-si {
+            background-color: var(--red-accent);
+            color: var(--white);
+        }
+
+        .modal-btn-si-verde {
+            background-color: var(--green-accent);
+            color: var(--white);
         }
 
         form {
@@ -236,7 +362,27 @@
 
         .btn-atras { background-color: var(--gray-dark); color: var(--white); }
         .btn-aceptar { background-color: var(--green-accent); color: var(--white); }
-        .btn-ingresar { background-color: var(--green-accent); color: var(--white); width: 100%; margin-top: 10px; }
+
+        /* Media queries para adaptar la tabla perfectamente en celular */
+        @media screen and (max-width: 768px) {
+            header {
+                padding: 10px 15px;
+            }
+            h2 {
+                font-size: 1rem;
+            }
+            .logo-header {
+                height: 35px;
+            }
+            th, td {
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
+            /* Ocultar columnas secundarias en móviles para evitar scroll horizontal estresante */
+            .col-gmail, th:nth-child(7), td:nth-child(7) {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -248,17 +394,16 @@
         </div>
         <div class="user-status" id="user-status-container">
             <span id="user-email-display" style="display:none;"></span>
-            <button class="btn-logout" id="btn-logout" style="display:none;" onclick="cerrarSesion()">Salir</button>
+            <button class="btn-logout" id="btn-logout" style="display:none;" onclick="confirmarCierreSesion()">Salir</button>
         </div>
     </header>
 
-    <!-- INICIO DE SESIÓN SIMPLE -->
-   <!-- PANTALLA DE ACCESO CON BOTÓN REAL DE GOOGLE -->
+    <!-- PANTALLA DE ACCESO CON BOTÓN REAL DE GOOGLE -->
     <div id="pantalla-login">
         <h3 style="margin-bottom: 10px;">Servicio Técnico</h3>
         <p style="margin-bottom: 25px; color: #666; font-size: 0.9rem;">Accede con tu cuenta oficial de Google para registrar o eliminar tus reportes.</p>
-        
-        <!-- BOTÓN GOOGLE CON TU CLIENT ID -->
+       
+        <!-- BOTÓN GOOGLE CON CLIENT ID -->
         <div style="display: flex; justify-content: center;">
             <div id="g_id_onload"
                 data-client_id="539814549126-opqkfu4ckl6kgsn30s5tqmvoois5ebth.apps.googleusercontent.com"
@@ -271,9 +416,12 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <div id="app-contenido" style="display: none;">
-        
+       
         <!-- VISTA 1: TABLA PRINCIPAL -->
         <div id="vista-tabla" class="vista activa">
+            <div class="search-container">
+                <input type="text" id="input-buscador" class="search-input" placeholder="🔍 Buscar por docente, sala, equipo o estado..." oninput="filtrarRegistros()">
+            </div>
             <div class="tabla-contenedor">
                 <table id="tabla-registros">
                     <thead>
@@ -285,7 +433,7 @@
                             <th>Equipo</th>
                             <th>Estado</th>
                             <th>Notas</th>
-                            <th>Gmail</th>
+                            <th class="col-gmail">Gmail</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -300,6 +448,7 @@
         <!-- VISTA 2: FORMULARIO -->
         <div id="vista-formulario" class="vista">
             <form id="form-registro">
+                <input type="hidden" id="modo-edicion" value="false">
                 <div class="grupo-form">
                     <label for="id">ID (Autogenerado)</label>
                     <input type="text" id="id" readonly placeholder="Calculando ID...">
@@ -357,6 +506,28 @@
         </div>
     </div>
 
+    <!-- POP-UP DE CIERRE DE SESIÓN -->
+    <div id="modal-logout" class="modal-overlay">
+        <div class="modal-card">
+            <p>¿Estás seguro que querés salir?</p>
+            <div class="modal-acciones">
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalLogout()">No</button>
+                <button class="modal-btn modal-btn-si" onclick="cerrarSesion()">Sí</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP DE CONFIRMACIÓN DE BORRADO -->
+    <div id="modal-borrar" class="modal-overlay">
+        <div class="modal-card">
+            <p id="texto-modal-borrar">¿Estás seguro de eliminar este registro?</p>
+            <div class="modal-acciones">
+                <button class="modal-btn modal-btn-no" onclick="cerrarModalBorrar()">No</button>
+                <button class="modal-btn modal-btn-si" id="btn-confirmar-borrar">Sí</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const vistaTabla = document.getElementById('vista-tabla');
         const vistaFormulario = document.getElementById('vista-formulario');
@@ -369,6 +540,8 @@
 
         let usuarioSesionActual = localStorage.getItem('user_gmail') || null;
         let registros = [];
+        let idRegistroAEliminar = null;
+        let gmailRegistroAEliminar = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             if (usuarioSesionActual) {
@@ -376,14 +549,22 @@
             }
         });
 
-        // 🟢 FUNCIÓN QUE FALTABA: Procesa el token seguro de Google
+        // Cierra los menús desplegables de tres puntos si se hace clic fuera
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.acciones-menu-container')) {
+                document.querySelectorAll('.dropdown-opciones').forEach(menu => {
+                    menu.classList.remove('mostrar');
+                });
+            }
+        });
+
         function manejarLoginGoogle(response) {
             try {
                 const base64Url = response.credential.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
                 const payload = JSON.parse(jsonPayload);
-                
+               
                 usuarioSesionActual = payload.email.toLowerCase();
                 localStorage.setItem('user_gmail', usuarioSesionActual);
                 activarSesion(usuarioSesionActual);
@@ -394,27 +575,27 @@
         }
 
         function activarSesion(email) {
-            document.getElementById('user-email-display').style.display = 'inline';
-            document.getElementById('user-email-display').textContent = email;
+            const userDisplay = document.getElementById('user-email-display');
+            userDisplay.style.display = 'none'; // Oculto el texto del mail en el banner superior tal cual fue solicitado
             document.getElementById('btn-logout').style.display = 'inline';
-            
+           
             document.getElementById('pantalla-login').style.display = 'none';
             document.getElementById('app-contenido').style.display = 'block';
 
             cargarDatosDesdeSheets();
         }
 
+        function confirmarCierreSesion() {
+            document.getElementById('modal-logout').style.display = 'flex';
+        }
+
+        function cerrarModalLogout() {
+            document.getElementById('modal-logout').style.display = 'none';
+        }
+
         function cerrarSesion() {
             localStorage.removeItem('user_gmail');
             usuarioSesionActual = null;
-            
-            document.getElementById('user-email-display').style.display = 'none';
-            document.getElementById('btn-logout').style.display = 'none';
-            
-            document.getElementById('pantalla-login').style.display = 'block';
-            document.getElementById('app-contenido').style.display = 'none';
-            
-            // Recarga la página para limpiar el botón de Google correctamente
             location.reload();
         }
 
@@ -430,14 +611,19 @@
         }
 
         btnNuevo.addEventListener('click', () => {
+            document.getElementById('modo-edicion').value = "false";
             document.getElementById('fecha').valueAsDate = new Date();
             document.getElementById('id').value = obtenerSiguienteID();
+            document.getElementById('gmail').value = usuarioSesionActual;
+            formRegistro.reset();
+            document.getElementById('id').value = obtenerSiguienteID(); // Restaurar ID tras reset
             document.getElementById('gmail').value = usuarioSesionActual;
             mostrarVista('vista-formulario');
         });
 
         btnAtras.addEventListener('click', () => {
             formRegistro.reset();
+            document.getElementById('modo-edicion').value = "false";
             mostrarVista('vista-tabla');
         });
 
@@ -446,21 +632,30 @@
             return fechaTexto.includes('T') ? fechaTexto.split('T')[0] : fechaTexto;
         }
 
-        function actualizarTabla() {
+        function actualizarTabla(listaAMostrar = registros) {
             tbodyRegistros.innerHTML = '';
-            
-            if(registros.length === 0) {
+           
+            if(listaAMostrar.length === 0) {
                 tbodyRegistros.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay registros todavía.</td></tr>';
                 return;
             }
 
-            registros.forEach(reg => {
+            listaAMostrar.forEach(reg => {
                 const fila = document.createElement('tr');
                 const esDueño = usuarioSesionActual && reg.gmail && reg.gmail.toLowerCase() === usuarioSesionActual.toLowerCase();
-                
-                const botonBorrar = esDueño 
-                    ? `<button class="btn-borrar" onclick="eliminarRegistro('${reg.id}', '${reg.gmail}')">🗑️ Borrar</button>`
-                    : `<span style="color:#aaa;">-</span>`;
+               
+                let accionesHtml = `<span style="color:#aaa;">-</span>`;
+                if (esDueño) {
+                    accionesHtml = `
+                        <div class="acciones-menu-container">
+                            <button class="btn-tres-puntos" onclick="toggleMenu(event, '${reg.id}')">⋮</button>
+                            <div id="menu-${reg.id}" class="dropdown-opciones">
+                                <button class="dropdown-item" onclick="cargarRegistroParaModificar('${reg.id}')">Modificar</button>
+                                <button class="dropdown-item borrar" onclick="abrirModalBorrar('${reg.id}', '${reg.gmail}')">Borrar</button>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 fila.innerHTML = `
                     <td><strong>#${reg.id}</strong></td>
@@ -470,22 +665,76 @@
                     <td>${reg.equipo}</td>
                     <td>${reg.estado}</td>
                     <td>${reg.notas && reg.notas.trim() !== "" ? reg.notas : "-"}</td>
-                    <td>${reg.gmail}</td>
-                    <td>${botonBorrar}</td>
+                    <td class="col-gmail">${reg.gmail}</td>
+                    <td>${accionesHtml}</td>
                 `;
                 tbodyRegistros.appendChild(fila);
             });
         }
 
-        function eliminarRegistro(id, ownerGmail) {
+        function toggleMenu(event, id) {
+            event.stopPropagation();
+            const menuActual = document.getElementById(`menu-${id}`);
+            document.querySelectorAll('.dropdown-opciones').forEach(m => {
+                if (m !== menuActual) m.classList.remove('mostrar');
+            });
+            menuActual.classList.toggle('mostrar');
+        }
+
+        function filtrarRegistros() {
+            const texto = document.getElementById('input-buscador').value.toLowerCase();
+            const filtrados = registros.filter(reg => {
+                const docente = (reg.docente || "").toLowerCase();
+                const sala = (reg.sala || "").toLowerCase();
+                const equipo = (reg.equipo || "").toLowerCase();
+                const estado = (reg.estado || "").toLowerCase();
+                const notas = (reg.notas || "").toLowerCase();
+                const idStr = String(reg.id || "");
+
+                return docente.includes(texto) || sala.includes(texto) || equipo.includes(texto) || estado.includes(texto) || notas.includes(texto) || idStr.includes(texto);
+            });
+            actualizarTabla(filtrados);
+        }
+
+        function cargarRegistroParaModificar(id) {
+            const reg = registros.find(r => String(r.id) === String(id));
+            if (!reg) return;
+
+            document.getElementById('modo-edicion').value = "true";
+            document.getElementById('id').value = reg.id;
+            document.getElementById('fecha').value = formatearFecha(reg.fecha);
+            document.getElementById('docente').value = reg.docente || "";
+            document.getElementById('sala').value = reg.sala || "";
+            document.getElementById('equipo').value = reg.equipo || "";
+            document.getElementById('estado').value = reg.estado || "";
+            document.getElementById('notas').value = reg.notas || "";
+            document.getElementById('gmail').value = reg.gmail || usuarioSesionActual;
+
+            mostrarVista('vista-formulario');
+        }
+
+        function abrirModalBorrar(id, ownerGmail) {
             if (usuarioSesionActual.toLowerCase() !== ownerGmail.toLowerCase()) {
                 alert("Solo puedes eliminar tus propios registros.");
                 return;
             }
+            idRegistroAEliminar = id;
+            gmailRegistroAEliminar = ownerGmail;
+            document.getElementById('texto-modal-borrar').textContent = `¿Estás seguro de eliminar el registro #${id}?`;
+            document.getElementById('btn-confirmar-borrar').onclick = ejecutarEliminacion;
+            document.getElementById('modal-borrar').style.display = 'flex';
+        }
 
-            if (!confirm(`¿Estás seguro de eliminar el registro #${id}?`)) {
-                return;
-            }
+        function cerrarModalBorrar() {
+            document.getElementById('modal-borrar').style.display = 'none';
+            idRegistroAEliminar = null;
+            gmailRegistroAEliminar = null;
+        }
+
+        function ejecutarEliminacion() {
+            const id = idRegistroAEliminar;
+            const gmail = gmailRegistroAEliminar;
+            cerrarModalBorrar();
 
             fetch(URL_SCRIPT, {
                 method: 'POST',
@@ -494,13 +743,13 @@
                 body: JSON.stringify({
                     action: 'delete',
                     id: id,
-                    gmail: usuarioSesionActual
+                    gmail: gmail
                 })
             })
             .then(() => {
                 alert("Registro eliminado.");
                 registros = registros.filter(r => r.id.toString() !== id.toString());
-                actualizarTabla();
+                filtrarRegistros();
             })
             .catch(err => alert("Error al intentar eliminar."));
         }
@@ -512,9 +761,23 @@
             botonAceptar.textContent = "Guardando...";
             botonAceptar.disabled = true;
 
-            const nuevoRegistro = {
+            const esEdicion = document.getElementById('modo-edicion').value === "true";
+            let fechaGuardar = document.getElementById('fecha').value;
+
+            if (esEdicion) {
+                // Actualizar automáticamente a la fecha y hora actual local si se modifica
+                const ahora = new Date();
+                const anio = ahora.getFullYear();
+                const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+                const dia = String(ahora.getDate()).padStart(2, '0');
+                const hora = String(ahora.getHours()).padStart(2, '0');
+                const minuto = String(ahora.getMinutes()).padStart(2, '0');
+                fechaGuardar = `${anio}-${mes}-${dia}T${hora}:${minuto}`;
+            }
+
+            const datosRegistro = {
                 id: document.getElementById('id').value,
-                fecha: document.getElementById('fecha').value,
+                fecha: fechaGuardar,
                 docente: document.getElementById('docente').value,
                 sala: document.getElementById('sala').value,
                 equipo: document.getElementById('equipo').value,
@@ -527,13 +790,23 @@
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevoRegistro)
+                body: JSON.stringify(datosRegistro)
             })
             .then(() => {
-                alert("¡Registro guardado con éxito!");
-                registros.push(nuevoRegistro);
-                actualizarTabla();
+                alert(esEdicion ? "¡Registro modificado con éxito!" : "¡Registro guardado con éxito!");
+                
+                if (esEdicion) {
+                    const index = registros.findIndex(r => String(r.id) === String(datosRegistro.id));
+                    if (index !== -1) {
+                        registros[index] = datosRegistro;
+                    }
+                } else {
+                    registros.push(datosRegistro);
+                }
+
+                filtrarRegistros();
                 formRegistro.reset();
+                document.getElementById('modo-edicion').value = "false";
                 mostrarVista('vista-tabla');
             })
             .catch(error => alert('Error al guardar.'))
@@ -548,11 +821,10 @@
                 .then(response => response.json())
                 .then(data => {
                     registros = data;
-                    actualizarTabla();
+                    filtrarRegistros();
                 })
                 .catch(err => console.error("Error al cargar datos:", err));
         }
-    
     </script>
 </body>
 </html>
